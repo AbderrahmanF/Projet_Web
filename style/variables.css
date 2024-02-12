@@ -1,0 +1,36 @@
+:root {
+    --background: linear-gradient(to right, #eef2f3, #8e9eab);
+    --title-color: rgb(0, 17, 72);
+    --text-color: rgb(2, 0, 38);
+    --text-size: 20px;
+    --box-background: white;
+    --button-color: rgb(165, 214, 248);
+    --button-hover: rgb(136, 200, 245);
+    --box-shadow: 0px 0px 27px 0px rgba(142, 136, 136, 0.75);
+    --navbar-width: 30%;
+    --navbar-color: white;
+    --list-background: #5d81ad5a;
+    --list-hover: #425b795a;
+    --border-list: #4f4f4f;
+    --transition: 400ms;
+}
+
+.is-dark {
+    --background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    --title-color: rgb(255, 255, 255);
+    --text-color: rgb(255, 255, 255);
+    --box-background: rgb(0, 0, 0);
+    --button-color: rgb(0, 50, 84);
+    --button-hover: rgb(0, 34, 81);
+    --box-shadow: 0px 0px 27px 0px rgba(142, 136, 136, 0.75);
+    --navbar-width: 30%;
+    --navbar-color: black;
+    --list-background: #36446c5e;
+    --list-hover: #2a3c565e;
+    --border-list: #aaa;
+    --transition: 400ms;
+}
+
+.navbar-hidden {
+    --navbar-width: 0%;
+}

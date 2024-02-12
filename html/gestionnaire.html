@@ -1,0 +1,140 @@
+<html lang="fr-FR">
+
+<head id="theme_toggle">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/root.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="../js/app.js"></script>
+    <title>Gestionnaire</title>
+</head>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let theme = '';
+        if (localStorage.getItem('gestionnaire_theme')) {
+            theme = localStorage.getItem('gestionnaire_theme')
+            myRoot = document.documentElement
+            myRoot.classList.add(theme)
+        }
+    })
+</script>
+
+<body>
+    <span class="hide-navbar pointer" onclick="hideNavbar()">
+        <i class="bi-chevron-left icon" id="arrow-button"></i>
+    </span>
+    <div class="primary-container">
+        <div class="left-navbar">
+            <div class="first-row">
+                <h1 class="is-title-1">Gestionnaire de CV</h1>
+                <span class="apply-theme pointer" onclick="changeTheme()">
+                    <i class="bi-moon icon"></i>
+                    <i class="bi-sun icon is-hidden"></i>
+                </span>
+            </div>
+            <div class="row">
+                <div class="flex column navbarRow">
+                    <h2 class="is-title">Rechercher un profil</h2>
+                    <input type="search" class="is-input" oninput="filterCV()" name="serachBar" id="searchBar"
+                        placeholder="Ecrire ici">
+                </div>
+            </div>
+            <div class="row">
+                <div class="flex column navbarRow">
+                    <h2 class="is-title">Filtrer les postes</h2>
+                    <div class="is-spaced-evenly">
+                        <select name="select-poste" id="select-poste" class="is-select">
+                            <option class="is-option" value="Expert Cybersécurité">Expert Cybersécurité</option>
+                            <option class="is-option" value="Expert Réseau">Expert Réseau</option>
+                            <option class="is-option" value="Développeur">Développeur</option>
+                            <option class="is-option" value="Manager">Manager</option>
+                            <option class="is-option" value="Support SI">Support SI</option>
+                        </select>
+                        <button class="submit-poste is-button pointer" onclick="addPoste()">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="filtre-poste">
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="select-flow">
+                <script type="module">
+                    import people from '../js/data.js'
+                    function getList() {
+                        var main = document.getElementsByClassName('select-flow')[0]
+                        var newUl = document.createElement("ul")
+                        newUl.classList.add('people-list')
+                        for (var i = 0; i < people.length; i += 2) {
+                            var newLi = document.createElement("li")
+                            var newImage = document.createElement("img")
+                            var newImage2 = document.createElement("img")
+                            newImage.setAttribute("src", "../icons/profile.png")
+                            newImage2.setAttribute("src", "../icons/profile.png")
+                            newImage.setAttribute("alt", "profile_picture")
+                            newImage2.setAttribute("alt", "profile_picture")
+                            var div1 = document.createElement("div")
+                            var div2 = document.createElement("div")
+                            var div1_1 = document.createElement("div")
+                            var div1_2 = document.createElement("div")
+                            var div2_1 = document.createElement("div")
+                            var div2_2 = document.createElement("div")
+                            var name1 = document.createElement("p")
+                            var phone1 = document.createElement("p")
+                            var mail1 = document.createElement("p")
+                            var name2 = document.createElement("p")
+                            var phone2 = document.createElement("p")
+                            var mail2 = document.createElement("p")
+                            name1.innerHTML = people[i]
+                            name2.innerHTML = people[i + 1]
+                            name1.setAttribute('class', 'name')
+                            name2.setAttribute('class', 'name')
+                            phone1.innerHTML = 'numéro de téléphone'
+                            phone2.innerHTML = 'numéro de téléphone'
+                            mail1.innerHTML = 'e-mail'
+                            mail2.innerHTML = 'e-mail'
+                            div1_1.appendChild(newImage2)
+                            div1_2.append(name2, phone2, mail2)
+                            div2_1.appendChild(newImage)
+                            div2_2.append(name1, phone1, mail1)
+                            div1.append(div1_1, div1_2)
+                            div2.append(div2_1, div2_2)
+                            newLi.setAttribute('id', people[i] + '-' + people[i + 1] + '-' + i)
+                            newLi.setAttribute('class', 'row is-list-item')
+                            div1.setAttribute('class', 'flex row is-person')
+                            div1_2.setAttribute('class', 'flex column person-attribut')
+                            div2_2.setAttribute('class', 'flex column person-attribut')
+                            div2.setAttribute('class', 'flex row is-person')
+                            div1.addEventListener('click', showCV)
+                            div2.addEventListener('click', showCV)
+                            newLi.append(div1, div2)
+                            newUl.appendChild(newLi)
+                        }
+                        // people.map((person, index) => {
+                        //     var newLi = document.createElement("li")
+                        //     newLi.setAttribute('id', person + '-' + index)
+                        //     newLi.setAttribute('class', 'is-person pointer')
+                        //     newLi.addEventListener('click', showCV)
+                        //     newLi.innerHTML = person
+                        //     newUl.appendChild(newLi)
+                        // })
+                        main.appendChild(newUl)
+                    }
+                    getList()
+                </script>
+            </div>
+            <div class="pdf-screen is-hidden">
+                <div class="blur" onclick="hideCV()">
+                </div>
+                <div class="pdf-box ">
+                    <h1 class="pdf-title">CV de </h1>
+                    <p class="pdf-text"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
