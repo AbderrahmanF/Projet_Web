@@ -67,6 +67,7 @@ function hideNavbar() {
 }
 
 function changeTheme() {
+    console.log(localStorage.getItem('gestionnaire_theme'))
     let head = document.querySelector(':root')
     let sun = document.querySelector('.bi-sun')
     let moon = document.querySelector('.bi-moon')
@@ -102,14 +103,14 @@ function hideCV() {
 
 function filterCV() {
     var text = document.querySelector('#searchBar').value.toLowerCase()
-    var ul = document.querySelector('.people-list')
-    var li_list = ul.children
-    for (let i = 0; i < li_list.length; i++) {
-        if (!li_list[i].innerHTML.toLowerCase().includes(text)) {
-            li_list[i].style.display = 'none'
+    var div = document.querySelector('.people-list')
+    var under_div = div.children
+    for (let i = 0; i < under_div.length; i++) {
+        if (!under_div[i].innerHTML.toLowerCase().includes(text)) {
+            under_div[i].style.display = 'none'
         }
         else {
-            li_list[i].style.display = 'block'
+            under_div[i].style.display = 'flex'
         }
     }
 }
@@ -124,7 +125,9 @@ function canConnect() {
     }
 }
 
-function addPoste() {
+function addPoste(e) {
+    // console.log()
+    parent = e.target.parentNode.parentNode
     let poste = document.querySelector('#select-poste').value
     let filtres = document.querySelector('#filtre-poste')
     for (let i = 0; i < filtres.children.length; i++) {
@@ -160,4 +163,49 @@ function SupPoste(evt) {
             break
         }
     }
+}
+
+function showAdder() {
+    let doc = document.querySelector('#main')
+    let div = document.querySelector('#adder-window')
+    if (div) {
+        div.style.display = 'flex'
+    }
+    else {
+        fetch('../html/ajouterUtilisateur.html')
+            .then(response => response.text())
+            .then(html => {
+                doc.insertAdjacentHTML('beforeend', html);
+            })
+            .catch(error => {
+                console.error('Une erreur s\'est produite : ', error);
+            });
+    }
+}
+
+function hideAdder() {
+    let div = document.querySelector('#adder-window')
+    div.style.display = 'none'
+}
+
+function selectPoste() {
+    let select = document.querySelector('#select-cat')
+    let value = select.value
+    let select_poste = document.querySelector('#select-poste')
+    let options = select_poste.children
+    let changed = false
+    for (let i = 0; i < options.length; i++) {
+        if (!(options[i].classList[1] == value)) {
+            options[i].style.display = 'none'
+        }
+        else {
+            if (!changed) {
+                console.log('pf')
+                select_poste.value = options[i].value
+                changed = true
+            }
+            options[i].style.display = 'block'
+        }
+    }
+
 }

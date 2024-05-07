@@ -16,10 +16,25 @@
             myRoot = document.documentElement
             myRoot.classList.add(theme)
         }
+        let head = document.querySelector(':root')
+        let sun = document.querySelector('.bi-sun')
+        let moon = document.querySelector('.bi-moon')
+        if (!head.classList.contains('is-dark')) {
+            console.log('hep')
+            sun.classList.add('is-hidden')
+            moon.classList.remove('is-hidden')
+            localStorage.setItem('gestionnaire_theme', '')
+
+        }
+        else {
+            sun.classList.remove('is-hidden')
+            moon.classList.add('is-hidden')
+            localStorage.setItem('gestionnaire_theme', 'is-dark')
+        }
     })
 </script>
 
-<body>
+<body id="main">
     <span class="hide-navbar pointer" onclick="hideNavbar()">
         <i class="bi-chevron-left icon" id="arrow-button"></i>
     </span>
@@ -39,18 +54,38 @@
                         placeholder="Ecrire ici">
                 </div>
             </div>
+            <div class="row" id="admin-options">
+                <script src="../js/admin.js"></script>
+            </div>
             <div class="row">
-                <div class="flex column navbarRow">
+                <div class="flex column navbarRow" id="filtre-poste">
                     <h2 class="is-title">Filtrer les postes</h2>
-                    <div class="is-spaced-evenly">
-                        <select name="select-poste" id="select-poste" class="is-select">
-                            <option class="is-option" value="Expert Cybersécurité">Expert Cybersécurité</option>
-                            <option class="is-option" value="Expert Réseau">Expert Réseau</option>
-                            <option class="is-option" value="Développeur">Développeur</option>
-                            <option class="is-option" value="Manager">Manager</option>
-                            <option class="is-option" value="Support SI">Support SI</option>
+                    <div class="is-centered">
+                        <select name="select-cat " id="select-cat" class="is-select" onchange="selectPoste()">
+                            <option class="is-option" value="SI">SI</option>
+                            <option class="is-option" value="RH">RH</option>
+                            <option class="is-option" value="Métier">Métier</option>
+                            <option class="is-option" value="Droit">Droit</option>
+                            <option class="is-option" value="Commercial">Commercial</option>
                         </select>
-                        <button class="submit-poste is-button pointer" onclick="addPoste()">Ajouter</button>
+                        <select name="select-poste " id="select-poste" class="is-select">
+                            <option class="is-option SI" value="Expert Cybersécurité">Expert Cybersécurité</option>
+                            <option class="is-option SI" value="Expert Réseau">Expert Réseau</option>
+                            <option class="is-option SI" value="Développeur">Développeur</option>
+                            <option class="is-option SI" value="Manager">Manager</option>
+                            <option class="is-option SI" value="Support SI">Support SI</option>
+
+                            <option class="is-option RH" value="RH alternant/stagiaire">RH alternant/stagiaire</option>
+                            <option class="is-option RH" value="RH manager">RH manager</option>
+
+                            <option class="is-option Métier" value="Support client">Support client</option>
+                            <option class="is-option Droit" value="Service judiciaire">Service judiciaire</option>
+
+                            <option class="is-option Commercial" value="Stratégie commerciale">Stratégie commerciale
+                            </option>
+                            <option class="is-option Commercial" value="Vendeur">Vendeur</option>
+                        </select>
+                        <button class="submit-poste is-button pointer" onclick="addPoste(event)">Ajouter</button>
                     </div>
                 </div>
             </div>
@@ -61,68 +96,7 @@
         </div>
         <div class="main">
             <div class="select-flow">
-                <script type="module">
-                    import people from '../js/data.js'
-                    function getList() {
-                        var main = document.getElementsByClassName('select-flow')[0]
-                        var newUl = document.createElement("ul")
-                        newUl.classList.add('people-list')
-                        for (var i = 0; i < people.length; i += 2) {
-                            var newLi = document.createElement("li")
-                            var newImage = document.createElement("img")
-                            var newImage2 = document.createElement("img")
-                            newImage.setAttribute("src", "../icons/profile.png")
-                            newImage2.setAttribute("src", "../icons/profile.png")
-                            newImage.setAttribute("alt", "profile_picture")
-                            newImage2.setAttribute("alt", "profile_picture")
-                            var div1 = document.createElement("div")
-                            var div2 = document.createElement("div")
-                            var div1_1 = document.createElement("div")
-                            var div1_2 = document.createElement("div")
-                            var div2_1 = document.createElement("div")
-                            var div2_2 = document.createElement("div")
-                            var name1 = document.createElement("p")
-                            var phone1 = document.createElement("p")
-                            var mail1 = document.createElement("p")
-                            var name2 = document.createElement("p")
-                            var phone2 = document.createElement("p")
-                            var mail2 = document.createElement("p")
-                            name1.innerHTML = people[i]
-                            name2.innerHTML = people[i + 1]
-                            name1.setAttribute('class', 'name')
-                            name2.setAttribute('class', 'name')
-                            phone1.innerHTML = 'numéro de téléphone'
-                            phone2.innerHTML = 'numéro de téléphone'
-                            mail1.innerHTML = 'e-mail'
-                            mail2.innerHTML = 'e-mail'
-                            div1_1.appendChild(newImage2)
-                            div1_2.append(name2, phone2, mail2)
-                            div2_1.appendChild(newImage)
-                            div2_2.append(name1, phone1, mail1)
-                            div1.append(div1_1, div1_2)
-                            div2.append(div2_1, div2_2)
-                            newLi.setAttribute('id', people[i] + '-' + people[i + 1] + '-' + i)
-                            newLi.setAttribute('class', 'row is-list-item')
-                            div1.setAttribute('class', 'flex row is-person')
-                            div1_2.setAttribute('class', 'flex column person-attribut')
-                            div2_2.setAttribute('class', 'flex column person-attribut')
-                            div2.setAttribute('class', 'flex row is-person')
-                            div1.addEventListener('click', showCV)
-                            div2.addEventListener('click', showCV)
-                            newLi.append(div1, div2)
-                            newUl.appendChild(newLi)
-                        }
-                        // people.map((person, index) => {
-                        //     var newLi = document.createElement("li")
-                        //     newLi.setAttribute('id', person + '-' + index)
-                        //     newLi.setAttribute('class', 'is-person pointer')
-                        //     newLi.addEventListener('click', showCV)
-                        //     newLi.innerHTML = person
-                        //     newUl.appendChild(newLi)
-                        // })
-                        main.appendChild(newUl)
-                    }
-                    getList()
+                <script type="module" src="../js/list.js">
                 </script>
             </div>
             <div class="pdf-screen is-hidden">
