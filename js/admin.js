@@ -14,7 +14,7 @@ function admin_buttons() {
         .then(response => response.text())
         .then(html2 => {
             filtres_poste.innerHTML = html2;
-            choix_poste.innerHTML = hrml2
+            choix_poste.innerHTML = html2
         })
         .catch(error => {
             console.error('Une erreur s\'est produite : ', error);

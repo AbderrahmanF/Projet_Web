@@ -209,3 +209,20 @@ function selectPoste() {
     }
 
 }
+
+function selectAll() {
+    let checkboxes = document.querySelectorAll('.checkbox')
+    let selectAll = document.querySelector('#select-all')
+    let checked = selectAll.checked
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = checked
+    }
+}
+function deleteSelected() {
+    let checkboxes = document.querySelectorAll('.checkbox')
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            checkboxes[i].parentNode.parentNode.remove()
+        }
+    }
+}

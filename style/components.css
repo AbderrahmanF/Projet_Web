@@ -72,6 +72,8 @@
     }
 }
 
+
+
 .is-title-1 {
     display: flex;
     flex-direction: row;
@@ -360,18 +362,7 @@ input::placeholder {
     transform: rotate(180deg);
 }
 
-.people-list {
-    width: 100%;
-    height: 100%;
-    /* list-style-type: none; */
-    margin: 0;
-    padding: 0;
-    overflow: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-content: flex-start;
-}
+
 
 .apply-theme {
     margin-right: 1.5rem;
@@ -551,24 +542,4 @@ input::placeholder {
     &.no-top {
         margin-top: 0;
     }
-}
-
-.is-person {
-    width: 40%;
-    text-align: center;
-    margin: 1rem 0rem;
-    padding: 2rem 0rem;
-    gap: 2rem;
-    border-radius: 5px;
-    background-color: var(--list-background);
-    border: 1px solid var(--border-list);
-    justify-content: space-evenly;
-
-    &:hover {
-        background-color: var(--list-hover);
-    }
-}
-
-.person-attribut {
-    align-items: flex-start;
 }

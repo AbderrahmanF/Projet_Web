@@ -7,8 +7,12 @@ function getList() {
         var newImage = document.createElement("img")
         newImage.setAttribute("src", "../icons/profile.png")
         newImage.setAttribute("alt", "profile_picture")
+        var checkbox = document.createElement("input")
+        checkbox.setAttribute("type", "checkbox")
+        checkbox.setAttribute("class", "checkbox")
         var div1 = document.createElement("div")
         var div1_1 = document.createElement("div")
+        div1_1.setAttribute('class', 'flex')
         var div1_2 = document.createElement("div")
         var name1 = document.createElement("p")
         var phone1 = document.createElement("p")
@@ -17,6 +21,7 @@ function getList() {
         name1.setAttribute('class', 'name')
         phone1.innerHTML = 'numéro de téléphone'
         mail1.innerHTML = 'e-mail'
+        div1_1.appendChild(checkbox)
         div1_1.appendChild(newImage)
         div1_2.append(name1, phone1, mail1)
         div1.append(div1_1, div1_2)
