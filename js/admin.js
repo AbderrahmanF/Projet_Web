@@ -10,14 +10,14 @@ function admin_buttons() {
         .catch(error => {
             console.error('Une erreur s\'est produite : ', error);
         });
-    fetch('../html/postes.html')
-        .then(response => response.text())
-        .then(html2 => {
-            filtres_poste.innerHTML = html2;
-            choix_poste.innerHTML = html2
-        })
-        .catch(error => {
-            console.error('Une erreur s\'est produite : ', error);
-        });
+    // fetch('../html/postes.html')
+    //     .then(response => response.text())
+    //     .then(html2 => {
+    //         filtres_poste.innerHTML = html2;
+    //         choix_poste.innerHTML = html2
+    //     })
+    //     .catch(error => {
+    //         console.error('Une erreur s\'est produite : ', error);
+    //     });
 }
 admin_buttons()
