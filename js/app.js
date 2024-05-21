@@ -125,6 +125,21 @@ function canConnect() {
     }
 }
 
+function filterByPoste() {
+    const postes = Array.from(document.querySelectorAll('.poste-div'))
+    const postesList = postes.map(poste => poste.id)
+    const personnes = document.querySelectorAll('.is-person')
+    for (let i = 0; i < personnes.length; i++) {
+        let poste = personnes[i].getAttribute('metier')
+        if (!postesList.includes(poste) && postesList.length > 0) {
+            personnes[i].style.display = 'none'
+        }
+        else {
+            personnes[i].style.display = 'flex'
+        }
+    }
+}
+
 function addPoste(e) {
     // console.log()
     parent = e.target.parentNode.parentNode
@@ -152,6 +167,7 @@ function addPoste(e) {
     newPoste.append(posteName, span)
     let row = document.querySelector('#filtre-poste')
     row.appendChild(newPoste)
+    filterByPoste()
 }
 
 function SupPoste(evt) {
@@ -163,6 +179,8 @@ function SupPoste(evt) {
             break
         }
     }
+    filterByPoste()
+
 }
 
 function showAdder() {

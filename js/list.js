@@ -31,7 +31,7 @@ function getList() {
         var mail1 = document.createElement("p")
         name1.innerHTML = people[i]
         name1.setAttribute('class', 'name')
-        phone1.innerHTML = 'numéro de téléphone'
+        phone1.innerHTML = 'numero de telephone'
         mail1.innerHTML = 'e-mail'
         div1_1.appendChild(newImage)
         div1_2.append(name1, phone1, mail1)
@@ -42,7 +42,7 @@ function getList() {
         div1.setAttribute('class', 'flex column is-person')
         div1_2.setAttribute('class', 'flex column person-attribut')
         div1.addEventListener('click', showCV)
-        div1.setAttribute("metier", "dev")
+        div1.setAttribute("metier", "Developpeur")
         div_primary.appendChild(div1)
     }
     main.appendChild(div_primary)
