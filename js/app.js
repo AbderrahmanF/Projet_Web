@@ -87,10 +87,13 @@ function changeTheme() {
 
 function showCV(e) {
     var text = e.target.querySelector(".name").innerHTML
-    console.log(e.target.innerHTML)
-    var pdf = document.querySelector(".pdf-text")
+    var pdf = document.querySelector(".pdf-box")
     var view = document.querySelector(".pdf-screen")
-    pdf.innerHTML = text
+    var iframe = document.createElement("iframe")
+    iframe.src = e.target.getAttribute("cv")
+    console.log(e.target.getAttribute("cv"))
+    pdf.appendChild(iframe)
+    // pdf.innerHTML = text
     view.classList.remove('is-hidden')
 }
 

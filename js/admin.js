@@ -1,7 +1,7 @@
 function admin_buttons() {
     let admin_div = document.querySelector("#admin-options")
-    let filtres_poste = document.querySelector('#filtre-poste')
-    let choix_poste = document.querySelector('#choix-poste')
+    // let filtres_poste = document.querySelector('#filtre-poste')
+    // let choix_poste = document.querySelector('#choix-poste')
     fetch('../html/admin.html')
         .then(response => response.text())
         .then(html => {
@@ -20,4 +20,4 @@ function admin_buttons() {
     //         console.error('Une erreur s\'est produite : ', error);
     //     });
 }
-admin_buttons()
+window.onload = (event) => { admin_buttons() }

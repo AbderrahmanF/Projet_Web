@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../style/root.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <script src="../js/app.js"></script>
+    <script src="../js/list.js"></script>
     <title>Gestionnaire</title>
 </head>
 
@@ -57,16 +58,45 @@
                 </div>
                 <?php
                 try {
-                    require ("connexion.inc.php");
-                    $select_query = "SELECT * FROM postulant";
+                    require ("../php/connexion.inc.php");
+                    function console_log($output, $with_script_tags = true)
+                    {
+                        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+                            ');';
+                        if ($with_script_tags) {
+                            $js_code = '<script>' . $js_code . '</script>';
+                        }
+                        echo $js_code;
+                    }
+                    $select_query = "SELECT postulant.nom AS nom, postulant.prenom AS prenom, postulant.email AS email, postulant.telephone as telephone, cv.pdf AS CvPath, offre.nom_offre AS NomOffre, secteurs.nom_secteur AS NomSecteur FROM postulant INNER JOIN postuler ON postulant.id_postulant = postuler.id_postulant INNER JOIN offre ON postuler.id_offre = offre.id_offre INNER JOIN secteurs ON offre.id_secteur = secteurs.id_secteur INNER JOIN cv ON postulant.id_cv = cv.id_cv;";
                     $res = $pdo->query($select_query);
-                    echo json_encode($res->fetchAll());
+                    $res->setFetchMode(PDO::FETCH_ASSOC);
+                    $list = array();
+                    foreach ($res as $row) {
+                        $person = array(
+                            "prenom" => $row['prenom'],
+                            "nom" => $row['nom'],
+                            "telephone" => $row['telephone'],
+                            "email" => $row['email'],
+                            "cv" => $row['CvPath'],
+                            "offre" => $row['NomOffre'],
+                            "secteur" => $row['NomSecteur']
+                        );
+                        array_push($list, $person);
+                    }
+                    $list = json_encode($list);
+                    echo '<script>getList(' . $list . ')</script>';
+                    $res->closeCursor();
+                    $select_query = "SELECT postulant.nom AS NomPostulant, postulant.prenom AS PrenomPostulant, postulant.email AS EmailPostulant, cv.pdf AS CvPath, offre.nom_offre AS NomOffre, secteurs.nom_secteur AS NomSecteur FROM postulant INNER JOIN postuler ON postulant.id_postulant = postuler.id_postulant INNER JOIN offre ON postuler.id_offre = offre.id_offre INNER JOIN secteurs ON offre.id_secteur = secteurs.id_secteur INNER JOIN cv ON postulant.id_cv = cv.id_cv;";
+                    $res = $pdo->query($select_query);
+                    $res->setFetchMode(PDO::FETCH_ASSOC);
+                    foreach ($res as $row) {
+                        console_log($row['NomPostulant'] . " " . $row['PrenomPostulant'] . " " . $row['EmailPostulant'] . " " . $row['NomOffre'] . " " . $row['NomSecteur']);
+                    }
                 } catch (PDOException $e) {
                     die("Erreur: " . $e->getMessage());
                 }
                 ?>
-                <script type="module" src="../js/list.js">
-                </script>
             </div>
             <div class="pdf-screen is-hidden">
                 <div class="blur" onclick="hideCV()">

@@ -1,10 +1,11 @@
-import people from '../js/data.js'
+// import people from '../js/data.js'
 // import { showAdder, showCV } from '../js/app.js'
-function getList() {
+function getList(L) {
+    console.log(L)
     var main = document.querySelector('.select-flow')
     var div_primary = document.createElement('div')
     div_primary.classList.add('people-list')
-    for (var i = 0; i < people.length; i += 1) {
+    for (var i = 0; i < L.length; i += 1) {
         var div_option = document.createElement('div')
         div_option.setAttribute('class', 'person-option')
         var div_content = document.createElement('div')
@@ -15,7 +16,7 @@ function getList() {
         var checkbox = document.createElement("input")
         checkbox.setAttribute("type", "checkbox")
         checkbox.setAttribute("class", "checkbox")
-        checkbox.setAttribute("personName", people[i])
+        checkbox.setAttribute("personName", L[i].prenom + ' ' + L[i].nom)
         div_option.appendChild(checkbox)
         var modif_icon = document.createElement("i")
         modif_icon.setAttribute("class", "icon bi-pencil-square pointer")
@@ -31,10 +32,10 @@ function getList() {
         var name1 = document.createElement("p")
         var phone1 = document.createElement("p")
         var mail1 = document.createElement("p")
-        name1.innerHTML = people[i]
+        name1.innerHTML = L[i].prenom + ' ' + L[i].nom
         name1.setAttribute('class', 'name')
-        phone1.innerHTML = 'numero de telephone'
-        mail1.innerHTML = 'e-mail'
+        phone1.innerHTML = L[i].telephone
+        mail1.innerHTML = L[i].email
         div1_1.appendChild(newImage)
         div1_2.append(name1, phone1, mail1)
         div1.appendChild(div_option)
@@ -45,8 +46,10 @@ function getList() {
         div1_2.setAttribute('class', 'flex column person-attribut')
         div1.addEventListener('click', showCV)
         div1.setAttribute("metier", "Developpeur")
+        div1.setAttribute("cv", L[i].cv)
+        console.log(L[i].cv)
         div_primary.appendChild(div1)
     }
     main.appendChild(div_primary)
 }
-getList()
+// getList()
