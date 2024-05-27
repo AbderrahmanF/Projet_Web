@@ -9,13 +9,18 @@
         justify-content: space-between;
         align-items: center;
 
-        #select-all {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
+        .select-all-option {
+            align-items: center;
+            justify-content: center;
 
-        #label-select-all {
-            font-size: 1.5rem;
+            #select-all {
+                width: 1rem;
+                height: 1rem;
+            }
+
+            #label-select-all {
+                font-size: var(--text-size);
+            }
         }
     }
 
@@ -36,14 +41,18 @@
 
         .is-person {
             width: 40%;
+            height: 20%;
             text-align: center;
             margin: 1rem 0rem;
-            padding: 2rem 0rem;
+            padding: .5rem 0;
             /* gap: 2rem; */
             border-radius: 5px;
             background-color: var(--list-background);
             border: 1px solid var(--border-list);
-            justify-content: space-evenly;
+            /* justify-content: space-evenly; */
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
 
             &:hover {
                 background-color: var(--list-hover);
@@ -54,22 +63,38 @@
                 align-items: center;
                 justify-content: space-between;
                 padding: 0 2rem;
+                width: 100%;
+
+                .icon {
+                    transform: scale(1);
+                }
             }
 
             .person-content {
                 display: flex;
                 justify-content: space-evenly;
+                margin: 0 0;
+                width: 100%;
+
+                .profile-picture {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                }
             }
 
             .person-attribut {
                 align-items: flex-start;
+                font-size: small;
+                display: flex;
+                justify-content: space-between;
             }
         }
 
     }
 
     .checkbox {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1rem;
+        height: 1rem;
     }
 }

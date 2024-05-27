@@ -233,14 +233,35 @@ function selectAll() {
     let selectAll = document.querySelector('#select-all')
     let checked = selectAll.checked
     for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = checked
+        if (checkboxes[i].parentElement.parentElement.style.display != 'none') {
+            checkboxes[i].checked = checked
+        }
     }
 }
 function deleteSelected() {
     let checkboxes = document.querySelectorAll('.checkbox')
+    persons = []
     for (let i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
-            checkboxes[i].parentNode.parentNode.remove()
+            persons.push(checkboxes[i].getAttribute('personName'))
         }
+    }
+    if (persons.length > 0) {
+        fetch('../php/delete.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ profiles: persons })
+        })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                // Optionnel : recharger la page pour refléter les changements
+                location.reload();
+            })
+            .catch(error => console.error('Erreur:', error));
+    } else {
+        alert('Veuillez sélectionner au moins un profil à supprimer.');
     }
 }

@@ -1,6 +1,7 @@
 @import url(components.css);
 @import url(variables.css);
 @import url(CvList.css);
+@import url(navbar.css);
 
 .left-navbar {
     display: flex;

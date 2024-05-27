@@ -64,13 +64,7 @@
 }
 
 
-#select-poste>.is-option {
-    display: none;
 
-    &.SI {
-        display: block;
-    }
-}
 
 
 
@@ -132,8 +126,8 @@
 
 }
 
-input::placeholder {
-    color: var(--text-color);
+.is-input::placeholder {
+    color: #8d8d8d;
 }
 
 .is-input-connexion {
@@ -183,7 +177,7 @@ input::placeholder {
 }
 
 .is-button {
-    height: 2.5rem;
+    height: 2rem;
     font-size: var(--text-size);
     min-width: fit-content;
     width: 30%;
@@ -194,6 +188,7 @@ input::placeholder {
     /* border: 1px solid var(--button-color); */
     border: var(--border-option);
     color: var(--text-color);
+    font-size: var(--text-size);
 
     &:hover {
         background-color: var(--button-hover);
@@ -260,12 +255,7 @@ input::placeholder {
     font-size: var(--text-size);
 }
 
-.option {
-    margin: 0;
-    padding: 0;
-    width: 100%;
 
-}
 
 .pointer {
     cursor: pointer;
@@ -330,20 +320,7 @@ input::placeholder {
 }
 
 
-.hide-navbar {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--navbar-color);
-    border: none;
-    width: 2rem;
-    height: 3rem;
-    top: calc(50% - 1.5rem);
-    left: calc(var(--navbar-width) - .5rem);
-    border-radius: 5px;
-    transition-duration: 400ms;
-}
+
 
 #arrow-button {
     transform: rotate(180deg);
@@ -390,13 +367,6 @@ input::placeholder {
     background-color: #d0d1d1;
 }
 
-#filtre-poste {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 2rem;
-}
 
 .sup-poste {
     width: 2rem;
@@ -434,9 +404,7 @@ input::placeholder {
     }
 }
 
-.navbar-hidden>.row {
-    display: none;
-}
+
 
 .pdf-screen {
     position: absolute;
@@ -464,11 +432,7 @@ input::placeholder {
     box-shadow: var(--box-shadow);
 }
 
-.navbarRow {
-    width: 100%;
-    align-items: flex-start;
-    height: fit-content;
-}
+
 
 .is-centered {
     width: 100%;
@@ -490,38 +454,15 @@ input::placeholder {
     align-items: center;
     /* gap: 1rem; */
     justify-content: space-evenly;
-    padding: .75rem;
+    padding: .5rem;
     width: 100%;
     background-color: var(--input-background);
     border: var(--border-option);
     border-radius: 5px;
 }
 
-.is-select {
-    border-radius: 5px 0 0 5px;
-    font-size: var(--text-size);
-    color: var(--text-color);
-    background-color: var(--input-background);
-    border: var(--border-option);
-    outline: none;
-    text-overflow: clip;
 
-    &#select-poste {
-        border-radius: 0px;
-        width: 50%;
-        /* border-: 1px 0px 1px 0px; */
-    }
 
-    &#select-cat {
-        width: 25%;
-        border-width: 1px 0px 1px 1px;
-    }
-}
-
-.submit-poste {
-    width: 25%;
-    border-radius: 0 5px 5px 0;
-}
 
 
 .cent {
@@ -543,4 +484,14 @@ input::placeholder {
     &.no-top {
         margin-top: 0;
     }
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+}
+
+p {
+    margin: 0;
+    padding: 0;
 }
