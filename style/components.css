@@ -1,0 +1,497 @@
+.box {
+    width: 35rem;
+    height: 25rem;
+    background-color: var(--box-background);
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+}
+
+*::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #DFE9EB;
+}
+
+*::-webkit-scrollbar-track:hover {
+    background-color: #DFE9EB;
+}
+
+*::-webkit-scrollbar-track:active {
+    background-color: #B8C0C2;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #656FC0;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #656FC0;
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background-color: #525A9C;
+}
+
+.gap-5 {
+    gap: .5rem;
+}
+
+.is-left {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: none;
+}
+
+.is-form {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+    justify-content: space-around;
+
+    &.ident {
+        height: 100%;
+    }
+
+    .is-button {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+.is-title-1 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 1.5rem;
+    color: var(--title-color);
+    transition-duration: var(--transition);
+    /* text-decoration: underline transparent; */
+
+    max-width: 100%;
+
+    /* &:hover {
+        text-decoration: underline var(--title-color);
+        transition-duration: var(--transition);
+    } */
+    .apply-theme {
+        display: flex;
+        margin: 0 0 0 1rem;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+#connect-button {
+    width: 100%;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.connexion-form {
+    /* margin: 0rem 6rem; */
+    /* height: 15rem; */
+    flex-grow: 1;
+    display: flex;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.connexion-label {
+    font-size: var(--text-size);
+    width: 100%;
+    margin-bottom: .5rem;
+}
+
+.is-input {
+    height: 3rem;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+    font-size: var(--text-size);
+    width: 100%;
+    background-color: var(--input-background);
+    color: var(--text-color);
+    border: var(--border-option);
+    outline: none;
+
+}
+
+.is-input::placeholder {
+    color: #8d8d8d;
+}
+
+.is-input-connexion {
+    height: 3rem;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+    font-size: var(--text-size);
+    width: 100%;
+    background-color: var(--input-background);
+    border: var(--border-option);
+}
+
+input::placeholder {
+    color: var(--text-color);
+}
+
+.flex {
+    display: flex;
+    margin: 0 0;
+
+    .connexion {
+
+        margin: 0;
+    }
+}
+
+
+.column {
+    flex-direction: column;
+    /* align-items: center; */
+}
+
+
+
+.bi {
+    position: relative;
+    right: 1.75rem;
+    top: 50%;
+    transform: translateY(-50%) scale(1.2);
+    margin: 0 -10rem 0 0;
+
+}
+
+.cent {
+    width: 100%;
+}
+
+.is-button {
+    height: 2rem;
+    font-size: var(--text-size);
+    min-width: fit-content;
+    width: 30%;
+    border-radius: 5px;
+    /* margin-top: 0.5rem; */
+    background-color: var(--button-color);
+    cursor: pointer;
+    /* border: 1px solid var(--button-color); */
+    border: var(--border-option);
+    color: var(--text-color);
+    font-size: var(--text-size);
+
+    &:hover {
+        background-color: var(--button-hover);
+    }
+
+    &.is-admin {
+        /* width: 30%; */
+        /* box-shadow: 0px 0px 3px 0px #6a6a6a; */
+        flex-grow: 1;
+    }
+}
+
+#adder-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    width: 100lvw;
+    height: 100lvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: transparent; */
+    backdrop-filter: blur(10px);
+}
+
+#user-adder {
+    background-color: white;
+    width: 40rem;
+    height: max-content;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    z-index: 1002;
+    background-color: var(--box-background);
+}
+
+.form-adder {
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    margin: 2rem 2rem;
+    gap: 1rem;
+}
+
+#pdf-file {
+    display: flex;
+    /* height: 3rem; */
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    /* box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75); */
+    font-size: var(--text-size);
+    width: 80%;
+
+}
+
+.is-label {
+    width: 100%;
+    text-align: left;
+    margin: 0;
+    margin-bottom: .5rem;
+    color: var(--text-color);
+    font-size: var(--text-size);
+}
+
+
+
+.pointer {
+    cursor: pointer;
+}
+
+.is-cv {
+    position: fixed;
+    top: 5rem;
+    right: 0;
+}
+
+.a-button {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+/* Style pour le simulateur de menu déroulant */
+
+
+.is-li {
+    display: flex;
+    width: 20rem;
+    height: 4rem;
+    border-radius: 5px;
+    border-color: transparent;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: .5rem 0;
+
+}
+
+#cv {
+    height: fit-content;
+    width: fit-content;
+    z-index: 1001;
+}
+
+
+#cv-window {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+
+}
+
+.blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+
+
+
+#arrow-button {
+    transform: rotate(180deg);
+    transform: scale(1.6);
+    width: 1.5rem;
+}
+
+.primary-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    /* overflow: hidden; */
+}
+
+.turn {
+    transform: rotate(180deg);
+}
+
+
+
+.apply-theme {
+    margin-right: 1.5rem;
+}
+
+.first-row {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.poste-div {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.poste-name {
+    padding: .5rem;
+    border-radius: 5px 0 0 5px;
+    margin: 0;
+    font-size: var(--text-size);
+    background-color: #d0d1d1;
+}
+
+
+.sup-poste {
+    width: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #c06565;
+    border-radius: 0 5px 5px 0;
+}
+
+.row {
+    margin: 1rem 2rem;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-around; */
+    /* align-items: center; */
+    height: fit-content;
+}
+
+.is-list-item {
+    margin: 1rem 0;
+    justify-content: space-evenly;
+}
+
+.is-hidden {
+    display: none;
+}
+
+.icon {
+    display: flex;
+    transform: scale(1.6);
+
+    &.is-hidden {
+        display: none;
+    }
+}
+
+
+
+.pdf-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+
+}
+
+.pdf-box {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 1001;
+    top: calc(30%);
+    left: calc(30%);
+    background-color: var(--box-background);
+    width: 40%;
+    height: 40%;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+}
+
+
+
+.is-centered {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-evenly; */
+    justify-content: center;
+
+    >* {
+        height: 3rem;
+        margin: 0;
+    }
+}
+
+.is-spaced-evenly {
+    display: flex;
+    box-sizing: border-box;
+    /* flex-direction: row; */
+    align-items: center;
+    /* gap: 1rem; */
+    justify-content: space-evenly;
+    padding: .5rem;
+    width: 100%;
+    background-color: var(--input-background);
+    border: var(--border-option);
+    border-radius: 5px;
+}
+
+
+
+
+
+.cent {
+    width: 100%;
+    justify-content: flex-start;
+}
+
+#searchBar {
+    width: 100%;
+}
+
+.is-title {
+    text-align: left;
+    margin: 1rem 0rem;
+    padding: 0;
+    max-width: 100%;
+    width: fit-content;
+
+    &.no-top {
+        margin-top: 0;
+    }
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}

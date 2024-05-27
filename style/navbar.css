@@ -1,0 +1,80 @@
+.hide-navbar {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--navbar-color);
+    border: none;
+    width: 2rem;
+    height: 3rem;
+    top: calc(50% - 1.5rem);
+    left: calc(var(--navbar-width) - .5rem);
+    border-radius: 5px;
+    transition-duration: 400ms;
+}
+
+.navbar-hidden>.row {
+    display: none;
+}
+
+.navbarRow {
+    width: 100%;
+    align-items: flex-start;
+    height: fit-content;
+
+    /* select {
+        font-size: var(--text-size);
+    } */
+}
+
+#filtre-poste {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+#select-poste>.is-option {
+    display: none;
+
+    &.SI {
+        display: block;
+    }
+}
+
+.is-select {
+    border-radius: 5px 0 0 5px;
+    font-size: var(--text-size);
+    color: var(--text-color);
+    background-color: var(--input-background);
+    border: var(--border-option);
+    outline: none;
+    text-overflow: clip;
+    font-size: var(--text-size);
+    height: 2rem;
+
+    &#select-poste {
+        border-radius: 0px;
+        width: 50%;
+        /* border-: 1px 0px 1px 0px; */
+    }
+
+    &#select-cat {
+        width: 25%;
+        border-width: 1px 0px 1px 1px;
+    }
+}
+
+.submit-poste {
+    width: 25%;
+    border-radius: 0 5px 5px 0;
+    height: 2rem;
+    font-size: var(--text-size);
+}
+
+.option {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
