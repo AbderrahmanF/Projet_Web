@@ -1,6 +1,7 @@
-import people from '../js/data.js'
-// import { showAdder, showCV } from '../js/app.js'
+//  import people from '../js/data.js'
+// // import { showAdder, showCV } from '../js/app.js'
 function getList() {
+    const people = []
     var main = document.querySelector('.select-flow')
     var div_primary = document.createElement('div')
     div_primary.classList.add('people-list')
