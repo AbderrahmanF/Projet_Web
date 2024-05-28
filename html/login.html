@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr-FR">
 
 <head>
@@ -5,35 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/root.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
     <script type="text/javascript" src="../js/app.js"></script>
     <title>Gestionnaire de CV</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let theme = '';
+            if (localStorage.getItem('gestionnaire_theme')) {
+                theme = localStorage.getItem('gestionnaire_theme');
+                myRoot = document.documentElement;
+                myRoot.classList.add(theme);
+            }
+            let head = document.querySelector(':root');
+            let sun = document.querySelector('.bi-sun');
+            let moon = document.querySelector('.bi-moon');
+            if (!head.classList.contains('is-dark')) {
+                sun.classList.add('is-hidden');
+                moon.classList.remove('is-hidden');
+                localStorage.setItem('gestionnaire_theme', '');
+            } else {
+                sun.classList.remove('is-hidden');
+                moon.classList.add('is-hidden');
+                localStorage.setItem('gestionnaire_theme', 'is-dark');
+            }
+        });
+    </script>
 </head>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let theme = '';
-        if (localStorage.getItem('gestionnaire_theme')) {
-            theme = localStorage.getItem('gestionnaire_theme')
-            myRoot = document.documentElement
-            myRoot.classList.add(theme)
-        }
-        let head = document.querySelector(':root')
-        let sun = document.querySelector('.bi-sun')
-        let moon = document.querySelector('.bi-moon')
-        if (!head.classList.contains('is-dark')) {
-            console.log('hep')
-            sun.classList.add('is-hidden')
-            moon.classList.remove('is-hidden')
-            localStorage.setItem('gestionnaire_theme', '')
-
-        }
-        else {
-            sun.classList.remove('is-hidden')
-            moon.classList.add('is-hidden')
-            localStorage.setItem('gestionnaire_theme', 'is-dark')
-        }
-    })
-</script>
 
 <body>
     <div class="home">
@@ -46,22 +43,18 @@
                 </span>
             </div>
             <div class="connexion-form">
-                <form action="../php/Connexion.php" class="is-form flex colum ident" method="post">
+                <form action="../php/Connexion.php" class="is-form flex column ident" method="post">
                     <input class="is-input-connexion" id="username" name="User" type="text"
                         placeholder="Nom d'utilisateur">
-                    <form action="" class="is-form flex colum ident">
-                        <input class="is-input-connexion" id="username" name="username" type="text"
-                            placeholder="Nom d'utilisateur">
-                        <div class="flex row connexion is-left">
-                            <input class="is-input-connexion" id="password" type="password" placeholder="Mot de passe">
-                            <i class="pointer bi bi-eye-slash" id="togglePassword" onclick="togglePassword()"></i>
-                        </div>
-                        <button class="is-button pointer">
-                            <a id="connect-button">Se
-                                connecter
-                            </a>
-                        </button>
-                    </form>
+                    <div class="flex row connexion is-left">
+                        <input class="is-input-connexion" id="password" name="Pass" type="password"
+                            placeholder="Mot de passe">
+                        <i class="pointer bi bi-eye-slash" id="togglePassword" onclick="togglePassword()"></i>
+                    </div>
+                    <button class="is-button pointer" type="submit">
+                        Se connecter
+                    </button>
+                </form>
             </div>
         </div>
     </div>

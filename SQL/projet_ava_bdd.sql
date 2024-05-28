@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 27 mai 2024 à 13:24
+-- Généré le : lun. 27 mai 2024 à 14:13
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -32,7 +32,16 @@ CREATE TABLE IF NOT EXISTS `authentification` (
   `id_mot_passe` int NOT NULL AUTO_INCREMENT,
   `mot_passe` varchar(42) DEFAULT NULL,
   PRIMARY KEY (`id_mot_passe`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `authentification`
+--
+
+INSERT INTO `authentification` (`id_mot_passe`, `mot_passe`) VALUES
+(1, 'a.Foullous2024'),
+(2, 'a.Kamerer2024'),
+(3, 'v.Angoulvant2024');
 
 -- --------------------------------------------------------
 
@@ -50,11 +59,11 @@ CREATE TABLE IF NOT EXISTS `cv` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `offre`
+-- Structure de la table `offres`
 --
 
-DROP TABLE IF EXISTS `offre`;
-CREATE TABLE IF NOT EXISTS `offre` (
+DROP TABLE IF EXISTS `offres`;
+CREATE TABLE IF NOT EXISTS `offres` (
   `id_offre` int NOT NULL AUTO_INCREMENT,
   `id_secteur` int NOT NULL,
   `nom_poste` varchar(42) DEFAULT NULL,
@@ -63,10 +72,10 @@ CREATE TABLE IF NOT EXISTS `offre` (
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `offre`
+-- Déchargement des données de la table `offres`
 --
 
-INSERT INTO `offre` (`id_offre`, `id_secteur`, `nom_poste`) VALUES
+INSERT INTO `offres` (`id_offre`, `id_secteur`, `nom_poste`) VALUES
 (1, 2, NULL),
 (2, 1, NULL),
 (3, 1, NULL),
@@ -132,21 +141,21 @@ INSERT INTO `postuler` (`id_postulant`, `id_offre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `secteur`
+-- Structure de la table `secteurs`
 --
 
-DROP TABLE IF EXISTS `secteur`;
-CREATE TABLE IF NOT EXISTS `secteur` (
+DROP TABLE IF EXISTS `secteurs`;
+CREATE TABLE IF NOT EXISTS `secteurs` (
   `id_secteur` int NOT NULL AUTO_INCREMENT,
   `nom_secteur` varchar(42) DEFAULT NULL,
   PRIMARY KEY (`id_secteur`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `secteur`
+-- Déchargement des données de la table `secteurs`
 --
 
-INSERT INTO `secteur` (`id_secteur`, `nom_secteur`) VALUES
+INSERT INTO `secteurs` (`id_secteur`, `nom_secteur`) VALUES
 (1, 'cybersécurité'),
 (2, 'centre_de_contact'),
 (3, 'lab_recherche');
@@ -154,11 +163,11 @@ INSERT INTO `secteur` (`id_secteur`, `nom_secteur`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateur`
+-- Structure de la table `utilisateurs`
 --
 
-DROP TABLE IF EXISTS `utilisateur`;
-CREATE TABLE IF NOT EXISTS `utilisateur` (
+DROP TABLE IF EXISTS `utilisateurs`;
+CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `id_user` int NOT NULL AUTO_INCREMENT,
   `username` varchar(42) DEFAULT NULL,
   `droits` varchar(42) DEFAULT NULL,
@@ -168,12 +177,13 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `utilisateur`
+-- Déchargement des données de la table `utilisateurs`
 --
 
-INSERT INTO `utilisateur` (`id_user`, `username`, `droits`, `id_mot_passe`) VALUES
-(1, 'kamaury', 'super_admin', 1),
-(2, 'avincent', 'normal', 2);
+INSERT INTO `utilisateurs` (`id_user`, `username`, `droits`, `id_mot_passe`) VALUES
+(1, 'abdelo', 'Admin', 1),
+(2, 'amauKame', 'Admin', 2),
+(3, 'vincenzo', 'Admin', 3);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
