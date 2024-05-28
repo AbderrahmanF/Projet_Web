@@ -30,6 +30,33 @@
                     </p>
                     <input id="pdf-file" class="pointer" type="file" accept="application/pdf" required>
                 </div>
+                <div class="is-centered">
+                    <select name="select-cat " id="select-cat" class="is-select" onchange="selectPoste()">
+                        <option class="is-option" value="SI">SI</option>
+                        <option class="is-option" value="RH">RH</option>
+                        <option class="is-option" value="Metier">Metier</option>
+                        <option class="is-option" value="Droit">Droit</option>
+                        <option class="is-option" value="Commercial">Commercial</option>
+                    </select>
+                    <select name="select-poste " id="select-poste" class="is-select">
+                        <option class="is-option SI" value="Expert Cybersecurite">Expert Cybersecurite</option>
+                        <option class="is-option SI" value="Expert Reseau">Expert Reseau</option>
+                        <option class="is-option SI" value="apprenti_dev">apprenti_dev</option>
+                        <option class="is-option SI" value="Manager">Manager</option>
+                        <option class="is-option SI" value="Support SI">Support SI</option>
+
+                        <option class="is-option RH" value="RH alternant/stagiaire">RH alternant/stagiaire</option>
+                        <option class="is-option RH" value="RH manager">RH manager</option>
+
+                        <option class="is-option Metier" value="Support client">Support client</option>
+                        <option class="is-option Droit" value="Service judiciaire">Service judiciaire</option>
+
+                        <option class="is-option Commercial" value="Strategie commerciale">Strategie commerciale
+                        </option>
+                        <option class="is-option Commercial" value="Vendeur">Vendeur</option>
+                    </select>
+                    <button class="submit-poste is-button pointer" onclick="addPosteAjout(event)">Ajouter</button>
+                </div>
                 <div id="choix-poste">
                 </div>
                 <button type="submit" class="is-button cent">Ajouter</button>

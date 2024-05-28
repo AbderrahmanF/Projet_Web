@@ -68,7 +68,27 @@
                         }
                         echo $js_code;
                     }
-                    $select_query = "SELECT postulant.nom AS nom, postulant.prenom AS prenom, postulant.email AS email, postulant.telephone as telephone, cv.pdf AS CvPath, offre.nom_offre AS NomOffre, secteurs.nom_secteur AS NomSecteur FROM postulant INNER JOIN postuler ON postulant.id_postulant = postuler.id_postulant INNER JOIN offre ON postuler.id_offre = offre.id_offre INNER JOIN secteurs ON offre.id_secteur = secteurs.id_secteur INNER JOIN cv ON postulant.id_cv = cv.id_cv;";
+                    // $select_query = "SELECT     postulant.nom AS nom,    postulant.prenom AS prenom,    postulant.email AS email, postulant.telephone AS telephone,   cv.pdf AS CvPath,     GROUP_CONCAT(DISTINCT offre.nom_offre ORDER BY offre.nom_offre SEPARATOR ', ') AS Offres,     GROUP_CONCAT(DISTINCT secteurs.nom_secteur ORDER BY secteurs.nom_secteur SEPARATOR ', ') AS Secteurs FROM     postulant INNER JOIN     postuler ON postulant.id_postulant = postuler.id_postulant INNER JOIN     offre ON postuler.id_offre = offre.id_offre INNER JOIN     secteurs ON offre.id_secteur = secteurs.id_secteur INNER JOIN     cv ON postulant.id_cv = cv.id_cv GROUP BY     postulant.id_postulant;";
+                    $select_query = "SELECT 
+    postulant.nom AS nom,
+    postulant.prenom AS prenom,
+    postulant.email AS email,
+    postulant.telephone AS telephone,
+    cv.pdf AS CvPath,
+    GROUP_CONCAT(DISTINCT offre.nom_offre ORDER BY offre.nom_offre SEPARATOR ', ') AS offres,
+    GROUP_CONCAT(DISTINCT secteurs.nom_secteur ORDER BY secteurs.nom_secteur SEPARATOR ', ') AS secteurs
+FROM 
+    postulant
+INNER JOIN 
+    postuler ON postulant.id_postulant = postuler.id_postulant
+INNER JOIN 
+    offre ON postuler.id_offre = offre.id_offre
+INNER JOIN 
+    secteurs ON offre.id_secteur = secteurs.id_secteur
+INNER JOIN 
+    cv ON postulant.id_cv = cv.id_cv
+GROUP BY 
+    postulant.id_postulant;";
                     $res = $pdo->query($select_query);
                     $res->setFetchMode(PDO::FETCH_ASSOC);
                     $list = array();
@@ -79,20 +99,20 @@
                             "telephone" => $row['telephone'],
                             "email" => $row['email'],
                             "cv" => $row['CvPath'],
-                            "offre" => $row['NomOffre'],
-                            "secteur" => $row['NomSecteur']
+                            "offres" => $row['offres'],
+                            "secteur" => $row['secteurs']
                         );
                         array_push($list, $person);
                     }
                     $list = json_encode($list);
                     echo '<script>getList(' . $list . ')</script>';
                     $res->closeCursor();
-                    $select_query = "SELECT postulant.nom AS NomPostulant, postulant.prenom AS PrenomPostulant, postulant.email AS EmailPostulant, cv.pdf AS CvPath, offre.nom_offre AS NomOffre, secteurs.nom_secteur AS NomSecteur FROM postulant INNER JOIN postuler ON postulant.id_postulant = postuler.id_postulant INNER JOIN offre ON postuler.id_offre = offre.id_offre INNER JOIN secteurs ON offre.id_secteur = secteurs.id_secteur INNER JOIN cv ON postulant.id_cv = cv.id_cv;";
-                    $res = $pdo->query($select_query);
-                    $res->setFetchMode(PDO::FETCH_ASSOC);
-                    foreach ($res as $row) {
-                        console_log($row['NomPostulant'] . " " . $row['PrenomPostulant'] . " " . $row['EmailPostulant'] . " " . $row['NomOffre'] . " " . $row['NomSecteur']);
-                    }
+                    // $select_query = "SELECT postulant.nom AS nom, postulant.prenom AS prenom, postulant.email AS email, cv.pdf AS CvPath, offre.nom_offre AS offre, secteurs.nom_secteur AS secteur FROM postulant INNER JOIN postuler ON postulant.id_postulant = postuler.id_postulant INNER JOIN offre ON postuler.id_offre = offre.id_offre INNER JOIN secteurs ON offre.id_secteur = secteurs.id_secteur INNER JOIN cv ON postulant.id_cv = cv.id_cv;";
+                    // $res = $pdo->query($select_query);
+                    // $res->setFetchMode(PDO::FETCH_ASSOC);
+                    // foreach ($res as $row) {
+                    //     console_log($row['NomPostulant'] . " " . $row['PrenomPostulant'] . " " . $row['EmailPostulant'] . " " . $row['NomOffre'] . " " . $row['NomSecteur']);
+                    // }
                 } catch (PDOException $e) {
                     die("Erreur: " . $e->getMessage());
                 }
@@ -102,8 +122,7 @@
                 <div class="blur" onclick="hideCV()">
                 </div>
                 <div class="pdf-box ">
-                    <h1 class="pdf-title">CV de </h1>
-                    <p class="pdf-text"></p>
+                    <iframe class="pdf-text" width="1000" height="900"></iframe>
                 </div>
             </div>
         </div>

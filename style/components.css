@@ -423,13 +423,14 @@ input::placeholder {
     justify-content: center;
     flex-direction: column;
     z-index: 1001;
-    top: calc(30%);
-    left: calc(30%);
+    top: calc(5%);
+    left: calc(50% - 500px);
     background-color: var(--box-background);
-    width: 40%;
-    height: 40%;
+    width: auto;
+    height: 90%;
     border-radius: 15px;
     box-shadow: var(--box-shadow);
+    flex-wrap: wrap;
 }
 
 

@@ -86,22 +86,21 @@ function changeTheme() {
 }
 
 function showCV(e) {
-    var text = e.target.querySelector(".name").innerHTML
-    var pdf = document.querySelector(".pdf-box")
+    var target = e.target
+    while (!target.classList.contains('is-person')) {
+        target = target.parentNode
+    }
+    console.log(target)
+    console.log(target.getAttribute("cv"))
+    var iframe = document.querySelector(".pdf-text")
+    iframe.src = target.getAttribute("cv")
     var view = document.querySelector(".pdf-screen")
-    var iframe = document.createElement("iframe")
-    iframe.src = e.target.getAttribute("cv")
-    console.log(e.target.getAttribute("cv"))
-    pdf.appendChild(iframe)
-    // pdf.innerHTML = text
     view.classList.remove('is-hidden')
 }
 
 function hideCV() {
-    console.log('hop')
     var view = document.querySelector(".pdf-screen")
     view.classList.add('is-hidden')
-
 }
 
 function filterCV() {
@@ -131,10 +130,19 @@ function canConnect() {
 function filterByPoste() {
     const postes = Array.from(document.querySelectorAll('.poste-div'))
     const postesList = postes.map(poste => poste.id)
+    console.log(postesList)
     const personnes = document.querySelectorAll('.is-person')
     for (let i = 0; i < personnes.length; i++) {
         let poste = personnes[i].getAttribute('metier')
-        if (!postesList.includes(poste) && postesList.length > 0) {
+        let shouldAppear = false
+        for (let j = 0; j < postesList.length; j++) {
+            if (poste.includes(postesList[j])) {
+                personnes[i].style.display = 'flex'
+                shouldAppear = true
+                break
+            }
+        }
+        if (!shouldAppear && postesList.length > 0) {
             personnes[i].style.display = 'none'
         }
         else {
@@ -143,9 +151,41 @@ function filterByPoste() {
     }
 }
 
+function addPosteAjout(e) {
+    let poste = document.querySelector('#select-poste').value
+    let filtres = document.querySelector('#filtre-poste')
+    for (let i = 0; i < filtres.children.length; i++) {
+        if (filtres.children[i].id === poste) {
+            return
+        }
+    }
+    let newPoste = document.createElement('div')
+    newPoste.setAttribute('class', 'poste-div')
+    newPoste.setAttribute('id', poste)
+    let posteName = document.createElement('p')
+    posteName.setAttribute('class', 'poste-name')
+    posteName.innerHTML = poste
+    let span = document.createElement('span')
+    span.setAttribute('class', 'sup-poste pointer')
+    span.setAttribute('id', poste)
+    span.addEventListener('click', SupPoste)
+    let croix = document.createElement('i')
+    croix.setAttribute('class', 'bi-x icon')
+    croix.setAttribute('id', poste)
+    span.appendChild(croix)
+    newPoste.append(posteName, span)
+    let row = document.querySelector('#choix-poste')
+    row.appendChild(newPoste)
+}
+
+function SupPosteAjout(evt) {
+
+}
+
+
 function addPoste(e) {
     // console.log()
-    parent = e.target.parentNode.parentNode
+    // parent = e.target.parentNode.parentNode
     let poste = document.querySelector('#select-poste').value
     let filtres = document.querySelector('#filtre-poste')
     for (let i = 0; i < filtres.children.length; i++) {

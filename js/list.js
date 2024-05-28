@@ -47,7 +47,8 @@ function getList(L) {
         div1.addEventListener('click', showCV)
         div1.setAttribute("metier", "Developpeur")
         div1.setAttribute("cv", L[i].cv)
-        console.log(L[i].cv)
+        div1.setAttribute("metier", L[i].offres)
+        console.log(L[i])
         div_primary.appendChild(div1)
     }
     main.appendChild(div_primary)
