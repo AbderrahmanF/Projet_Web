@@ -153,7 +153,7 @@ function filterByPoste() {
 
 function addPosteAjout(e) {
     let poste = document.querySelector('#select-poste').value
-    let filtres = document.querySelector('#filtre-poste')
+    let filtres = document.querySelector('#choix-poste')
     for (let i = 0; i < filtres.children.length; i++) {
         if (filtres.children[i].id === poste) {
             return
@@ -179,7 +179,14 @@ function addPosteAjout(e) {
 }
 
 function SupPosteAjout(evt) {
-
+    let element_id = evt.target.id
+    let filtres = document.querySelector('#choix-poste')
+    for (let i = 0; i < filtres.children.length; i++) {
+        if (filtres.children[i].id === element_id) {
+            filtres.removeChild(filtres.children[i])
+            break
+        }
+    }
 }
 
 
