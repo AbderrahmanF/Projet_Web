@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit']) && $_POST['s
 
     // Gestion du fichier PDF
     $pdf_file = $_FILES['pdf_file'];
-    $upload_dir = 'uploads/';
+    $upload_dir = '../CV/uploads/'; // Assurez-vous que ce chemin est correct
 
     // Vérifier et créer le répertoire d'upload s'il n'existe pas
     if (!is_dir($upload_dir)) {
@@ -49,32 +49,77 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit']) && $_POST['s
     $connexion->begin_transaction();
 
     try {
-        // Insertion du CV dans la table `cv`
-        $cv_query = "INSERT INTO cv (PDF) VALUES (?)";
-        $stmt_cv = $connexion->prepare($cv_query);
-        if ($stmt_cv === false) {
-            throw new Exception('Erreur de préparation (CV) : ' . $connexion->error);
+        // Vérifier si le postulant existe déjà
+        $check_query = "SELECT Id_Postulant, Id_Cv FROM postulant WHERE Nom = ? AND Telephone = ?";
+        $stmt_check = $connexion->prepare($check_query);
+        if ($stmt_check === false) {
+            throw new Exception('Erreur de préparation (Check) : ' . $connexion->error);
         }
-        $stmt_cv->bind_param("s", $pdf_path);
-        if (!$stmt_cv->execute()) {
-            throw new Exception('Erreur lors de l\'insertion du CV : ' . $stmt_cv->error);
-        }
-        $id_cv = $stmt_cv->insert_id;
+        $stmt_check->bind_param("ss", $nom, $telephone);
+        $stmt_check->execute();
+        $result = $stmt_check->get_result();
+        $postulant_exists = $result->num_rows > 0;
 
-        // Insertion du postulant dans la table `postulant`
-        $postulant_query = "INSERT INTO postulant (Nom, Prenom, Telephone, Email, Id_Cv) VALUES (?, ?, ?, ?, ?)";
-        $stmt_postulant = $connexion->prepare($postulant_query);
-        if ($stmt_postulant === false) {
-            throw new Exception('Erreur de préparation (Postulant) : ' . $connexion->error);
-        }
-        $stmt_postulant->bind_param("ssssi", $nom, $prenom, $telephone, $courriel, $id_cv);
-        if (!$stmt_postulant->execute()) {
-            throw new Exception('Erreur lors de l\'insertion du postulant : ' . $stmt_postulant->error);
+        if ($postulant_exists) {
+            // Postulant existe déjà, effectuer une mise à jour
+            $row = $result->fetch_assoc();
+            $id_postulant = $row['Id_Postulant'];
+            $id_cv = $row['Id_Cv'];
+
+            // Mettre à jour le CV existant
+            $update_cv_query = "UPDATE cv SET PDF = ? WHERE ID_CV = ?";
+            $stmt_update_cv = $connexion->prepare($update_cv_query);
+            if ($stmt_update_cv === false) {
+                throw new Exception('Erreur de préparation (Update CV) : ' . $connexion->error);
+            }
+            $stmt_update_cv->bind_param("si", $pdf_path, $id_cv);
+            if (!$stmt_update_cv->execute()) {
+                throw new Exception('Erreur lors de la mise à jour du CV : ' . $stmt_update_cv->error);
+            }
+
+            // Mettre à jour les informations du postulant
+            $update_postulant_query = "UPDATE postulant SET Prenom = ?, Email = ? WHERE Id_Postulant = ?";
+            $stmt_update_postulant = $connexion->prepare($update_postulant_query);
+            if ($stmt_update_postulant === false) {
+                throw new Exception('Erreur de préparation (Update Postulant) : ' . $connexion->error);
+            }
+            $stmt_update_postulant->bind_param("ssi", $prenom, $courriel, $id_postulant);
+            if (!$stmt_update_postulant->execute()) {
+                throw new Exception('Erreur lors de la mise à jour du postulant : ' . $stmt_update_postulant->error);
+            }
+
+            echo "Enregistrement mis à jour avec succès";
+        } else {
+            // Postulant n'existe pas, effectuer une insertion
+
+            // Insertion du CV dans la table `cv`
+            $cv_query = "INSERT INTO cv (PDF) VALUES (?)";
+            $stmt_cv = $connexion->prepare($cv_query);
+            if ($stmt_cv === false) {
+                throw new Exception('Erreur de préparation (CV) : ' . $connexion->error);
+            }
+            $stmt_cv->bind_param("s", $pdf_path);
+            if (!$stmt_cv->execute()) {
+                throw new Exception('Erreur lors de l\'insertion du CV : ' . $stmt_cv->error);
+            }
+            $id_cv = $stmt_cv->insert_id;
+
+            // Insertion du postulant dans la table `postulant`
+            $postulant_query = "INSERT INTO postulant (Nom, Prenom, Telephone, Email, Id_Cv) VALUES (?, ?, ?, ?, ?)";
+            $stmt_postulant = $connexion->prepare($postulant_query);
+            if ($stmt_postulant === false) {
+                throw new Exception('Erreur de préparation (Postulant) : ' . $connexion->error);
+            }
+            $stmt_postulant->bind_param("ssssi", $nom, $prenom, $telephone, $courriel, $id_cv);
+            if (!$stmt_postulant->execute()) {
+                throw new Exception('Erreur lors de l\'insertion du postulant : ' . $stmt_postulant->error);
+            }
+
+            echo "Nouvel enregistrement créé avec succès";
         }
 
         // Valider la transaction
         $connexion->commit();
-        echo "Nouvel enregistrement créé avec succès";
     } catch (Exception $e) {
         // En cas d'erreur, annuler la transaction
         $connexion->rollback();
@@ -82,8 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit']) && $_POST['s
     }
 
     // Fermer les statements et la connexion
-    $stmt_cv->close();
-    $stmt_postulant->close();
+    if (isset($stmt_check)) $stmt_check->close();
+    if (isset($stmt_update_cv)) $stmt_update_cv->close();
+    if (isset($stmt_update_postulant)) $stmt_update_postulant->close();
+    if (isset($stmt_cv)) $stmt_cv->close();
+    if (isset($stmt_postulant)) $stmt_postulant->close();
     $connexion->close();
 }
 ?>
