@@ -27,8 +27,7 @@
             moon.classList.remove('is-hidden')
             localStorage.setItem('gestionnaire_theme', '')
 
-        }
-        else if (sun && moon) {
+        } else if (sun && moon) {
             sun.classList.remove('is-hidden')
             moon.classList.add('is-hidden')
             localStorage.setItem('gestionnaire_theme', 'is-dark')

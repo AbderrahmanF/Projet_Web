@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr-FR">
 
 <head>
@@ -5,35 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/root.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
     <script type="text/javascript" src="../js/app.js"></script>
     <title>Gestionnaire de CV</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let theme = '';
+            if (localStorage.getItem('gestionnaire_theme')) {
+                theme = localStorage.getItem('gestionnaire_theme');
+                myRoot = document.documentElement;
+                myRoot.classList.add(theme);
+            }
+            let head = document.querySelector(':root');
+            let sun = document.querySelector('.bi-sun');
+            let moon = document.querySelector('.bi-moon');
+            if (!head.classList.contains('is-dark')) {
+                sun.classList.add('is-hidden');
+                moon.classList.remove('is-hidden');
+                localStorage.setItem('gestionnaire_theme', '');
+            } else {
+                sun.classList.remove('is-hidden');
+                moon.classList.add('is-hidden');
+                localStorage.setItem('gestionnaire_theme', 'is-dark');
+            }
+        });
+    </script>
 </head>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let theme = '';
-        if (localStorage.getItem('gestionnaire_theme')) {
-            theme = localStorage.getItem('gestionnaire_theme')
-            myRoot = document.documentElement
-            myRoot.classList.add(theme)
-        }
-        let head = document.querySelector(':root')
-        let sun = document.querySelector('.bi-sun')
-        let moon = document.querySelector('.bi-moon')
-        if (!head.classList.contains('is-dark')) {
-            console.log('hep')
-            sun.classList.add('is-hidden')
-            moon.classList.remove('is-hidden')
-            localStorage.setItem('gestionnaire_theme', '')
-
-        }
-        else {
-            sun.classList.remove('is-hidden')
-            moon.classList.add('is-hidden')
-            localStorage.setItem('gestionnaire_theme', 'is-dark')
-        }
-    })
-</script>
 
 <body>
     <div class="home">
@@ -55,10 +52,8 @@
                             placeholder="Mot de passe">
                         <i class="pointer bi bi-eye-slash" id="togglePassword" onclick="togglePassword()"></i>
                     </div>
-                    <button class="is-button pointer">
-                        <a id="connect-button">Se
-                            connecter
-                        </a>
+                    <button class="is-button pointer" type="submit">
+                        Se connecter
                     </button>
                 </form>
             </div>
