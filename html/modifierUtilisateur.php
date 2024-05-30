@@ -91,7 +91,7 @@
                 <div id="choix-poste-modif">
                 </div>
                 <input type="text" required name="verif-poste-modif" id="verif-poste-modif">
-                <button onclick="tryPosteModif()" class="is-button cent">Enregistrer</button>
+                <p onclick="tryPosteModif()" class="is-button cent">Enregistrer</p>
             </form>
         </div>
     </div>

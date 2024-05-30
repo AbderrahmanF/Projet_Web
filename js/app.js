@@ -629,19 +629,21 @@ function updatePostulant() {
             location.reload();
         })
         .catch(error => console.error('Erreur:', error));
+    hideModifier()
 }
 
 function addPostulant() {
-    let nom = document.querySelector('#nom-ajout').value
-    let prenom = document.querySelector('#prenom-ajout').value
-    let telephone = document.querySelector('#telephone-ajout').value
-    let courriel = document.querySelector('#courriel-ajout').value
+    let nom = document.querySelector('#nom').value
+    let prenom = document.querySelector('#prenom').value
+    let telephone = document.querySelector('#telephone').value
+    let courriel = document.querySelector('#courriel').value
     let postes = document.querySelector('#choix-poste').children
+    let cv = document.querySelector('#pdf-file').files[0].name
     let metier = []
     for (let i = 0; i < postes.length; i++) {
         metier.push({ "offre": postes[i].getAttribute('poste'), "secteur": postes[i].getAttribute('secteur') })
     }
-    let person = { "nom": nom, "prenom": prenom, "telephone": telephone, "courriel": courriel, "metier": metier }
+    let person = { "nom": nom, "prenom": prenom, "telephone": telephone, "courriel": courriel, "cv": cv, "metier": metier }
     fetch('../php/add.php', {
         method: 'POST',
         headers: {
@@ -656,4 +658,5 @@ function addPostulant() {
             location.reload();
         })
         .catch(error => console.error('Erreur:', error));
+    hideAdder()
 }

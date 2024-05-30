@@ -92,7 +92,7 @@
                 </div>
                 <div id="choix-poste" name="postes">
                 </div>
-                <button onclick="tryPoste()" class="is-button cent">Ajouter</button>
+                <p onclick="tryPoste()" class="is-button cent">Ajouter</p>
                 <input type="text" required name="" id="verif-poste">
             </form>
         </div>
