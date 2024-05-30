@@ -10,7 +10,7 @@
 </head>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         let theme = '';
         if (localStorage.getItem('gestionnaire_theme')) {
             theme = localStorage.getItem('gestionnaire_theme')
@@ -26,8 +26,7 @@
             moon.classList.remove('is-hidden')
             localStorage.setItem('gestionnaire_theme', '')
 
-        }
-        else if (sun && moon) {
+        } else if (sun && moon) {
             sun.classList.remove('is-hidden')
             moon.classList.add('is-hidden')
             localStorage.setItem('gestionnaire_theme', 'is-dark')
@@ -41,8 +40,7 @@
     </span>
     <div class="primary-container">
         <!-- <iframe src="leftNavbar.html"></iframe> -->
-        <iframe src="leftNavbar.html"
-            onload="this.before((this.contentDocument.body||this.contentDocument).children[0]);this.remove()"></iframe>
+        <iframe src="leftNavbar.html" onload="this.before((this.contentDocument.body||this.contentDocument).children[0]);this.remove()"></iframe>
         <div class="main">
             <!-- <div class="flex row">
                 <h2 class="is-title">Liste des CV</h2>
@@ -57,7 +55,7 @@
                 </div>
                 <?php
                 try {
-                    require ("connexion.inc.php");
+                    require("../php/Connexion.php");
                     $select_query = "SELECT * FROM postulant";
                     $res = $pdo->query($select_query);
                     echo json_encode($res->fetchAll());
