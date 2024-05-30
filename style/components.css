@@ -201,7 +201,18 @@ input::placeholder {
     }
 }
 
-#adder-window {
+.not-admin {
+    background-color: #a3a3a3;
+
+    cursor: not-allowed;
+
+    &:hover {
+        background-color: #a3a3a3;
+    }
+}
+
+#adder-window,
+#modifier-window {
     position: fixed;
     top: 0;
     left: 0;
@@ -215,7 +226,8 @@ input::placeholder {
     backdrop-filter: blur(10px);
 }
 
-#user-adder {
+#user-adder,
+#user-modifier {
     background-color: white;
     width: 40rem;
     height: max-content;
@@ -359,12 +371,17 @@ input::placeholder {
 
 }
 
-.poste-name {
+.offre-secteur {
     padding: .5rem;
     border-radius: 5px 0 0 5px;
     margin: 0;
     font-size: var(--text-size);
-    background-color: #d0d1d1;
+    background-color: var(--offreListeColor);
+
+    .secteur-name {
+        font-size: 12px;
+        font-style: italic;
+    }
 }
 
 
@@ -373,7 +390,7 @@ input::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #c06565;
+    background-color: #f7a03c;
     border-radius: 0 5px 5px 0;
 }
 
@@ -495,4 +512,13 @@ input::placeholder {
 p {
     margin: 0;
     padding: 0;
+}
+
+#verif-poste,
+#verif-poste-modif {
+    width: 0;
+    height: 0;
+    border: none;
+    padding: 0;
+    margin: 0;
 }

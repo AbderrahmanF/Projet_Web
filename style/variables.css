@@ -19,6 +19,7 @@
     --border-option: 1px solid rgb(202, 202, 202);
     --transition: 400ms;
     --input-background: #e3e3e3;
+    --offreListeColor: #d0d1d1;
 }
 
 .is-dark {
@@ -40,6 +41,7 @@
     --border-list: #aaa;
     --transition: 400ms;
     --input-background: #444;
+    --offreListeColor: #6a6b6b;
 }
 
 .navbar-hidden {

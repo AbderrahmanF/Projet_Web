@@ -20,4 +20,4 @@ function admin_buttons() {
     //         console.error('Une erreur s\'est produite : ', error);
     //     });
 }
-window.onload = (event) => { admin_buttons() }
+// window.onload = (event) => { admin_buttons() }

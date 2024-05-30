@@ -129,15 +129,18 @@ function canConnect() {
 
 function filterByPoste() {
     const postes = Array.from(document.querySelectorAll('.poste-div'))
-    const postesList = postes.map(poste => poste.id)
+    const postesList = postes.map(poste => {
+        return { "offre": poste.getAttribute('poste'), "secteur": poste.getAttribute('secteur') }
+    })
     console.log(postesList)
     const personnes = document.querySelectorAll('.is-person')
     for (let i = 0; i < personnes.length; i++) {
-        let poste = personnes[i].getAttribute('metier')
+        let postulations = JSON.parse(personnes[i].getAttribute('metier'))
+        console.log(postulations)
         let shouldAppear = false
         for (let j = 0; j < postesList.length; j++) {
-            if (poste.includes(postesList[j])) {
-                personnes[i].style.display = 'flex'
+            if (postulations.find(item => item.offre == postesList[j].offre && item.secteur == postesList[j].secteur)) {
+                console.log('should appear')
                 shouldAppear = true
                 break
             }
@@ -151,34 +154,107 @@ function filterByPoste() {
     }
 }
 
-function addPosteAjout(e) {
-    let poste = document.querySelector('#select-poste').value
-    let filtres = document.querySelector('#choix-poste')
+function addPosteModif(offre = null, cat = null) {
+    let verifPosteModif = document.querySelector('#verif-poste-modif')
+    if (verifPosteModif.value == "") {
+        verifPosteModif.value = "&"
+    }
+    let poste = offre != null ? offre : document.querySelector('#select-poste-modif').value
+    let secteur = cat != null ? cat : document.querySelector('#select-cat-modif').value
+    let filtres = document.querySelector('#choix-poste-modif')
     for (let i = 0; i < filtres.children.length; i++) {
-        if (filtres.children[i].id === poste) {
+        if (filtres.children[i].id === poste + "-modif") {
             return
         }
     }
     let newPoste = document.createElement('div')
     newPoste.setAttribute('class', 'poste-div')
-    newPoste.setAttribute('id', poste)
+    newPoste.setAttribute('id', poste + "-modif")
+    newPoste.setAttribute('poste', poste)
+    newPoste.setAttribute("secteur", secteur)
     let posteName = document.createElement('p')
     posteName.setAttribute('class', 'poste-name')
     posteName.innerHTML = poste
+    let secteurName = document.createElement('p')
+    secteurName.setAttribute('class', 'secteur-name')
+    secteurName.innerHTML = secteur
     let span = document.createElement('span')
     span.setAttribute('class', 'sup-poste pointer')
-    span.setAttribute('id', poste)
-    span.addEventListener('click', SupPoste)
+    span.setAttribute('id', poste + "-modif")
+    span.setAttribute('onclick', "SupPosteModif(event)")
     let croix = document.createElement('i')
     croix.setAttribute('class', 'bi-x icon')
-    croix.setAttribute('id', poste)
+    croix.setAttribute('id', poste + "-modif")
     span.appendChild(croix)
-    newPoste.append(posteName, span)
+    let names = document.createElement('div')
+    names.setAttribute('class', 'offre-secteur')
+    names.append(secteurName, posteName)
+    newPoste.append(names, span)
+    let row = document.querySelector('#choix-poste-modif')
+    row.appendChild(newPoste)
+}
+
+function SupPosteModif(evt) {
+    console.log(evt)
+    let element_id = evt.target.id
+    let filtres = document.querySelector('#choix-poste-modif')
+    for (let i = 0; i < filtres.children.length; i++) {
+        if (filtres.children[i].id === element_id) {
+            filtres.removeChild(filtres.children[i])
+            break
+        }
+    }
+    if (filtres.children.length == 0) {
+        let verifPoste = document.querySelector('#verif-poste-modif')
+        verifPoste.value = ""
+    }
+}
+
+function addPosteAjout() {
+    let verifPoste = document.querySelector('#verif-poste')
+    if (verifPoste.value == "") {
+        verifPoste.value = "&"
+    }
+    let poste = document.querySelector('#select-poste-ajout').value
+    let secteur = document.querySelector('#select-cat-ajout').value
+    let filtres = document.querySelector('#choix-poste')
+    for (let i = 0; i < filtres.children.length; i++) {
+        if (filtres.children[i].id === poste + "-ajout") {
+            return
+        }
+    }
+    let newPoste = document.createElement('div')
+    newPoste.setAttribute('class', 'poste-div')
+    newPoste.setAttribute('id', poste + "-ajout")
+    newPoste.setAttribute('poste', poste)
+    newPoste.setAttribute("secteur", secteur)
+    let posteName = document.createElement('input')
+    posteName.setAttribute('class', 'poste-name')
+    posteName.value = poste
+    posteName.setAttribute('disabled', 'true')
+    posteName.setAttribute('name', 'poste')
+    posteName.setAttribute('type', 'text')
+    let secteurName = document.createElement('p')
+    secteurName.setAttribute('class', 'secteur-name')
+    secteurName.innerHTML = secteur
+    let span = document.createElement('span')
+    span.setAttribute('class', 'sup-poste pointer')
+    span.setAttribute('id', poste + "-ajout")
+    span.setAttribute('onclick', "SupPosteAjout(event)")
+    let croix = document.createElement('i')
+    croix.setAttribute('class', 'bi-x icon')
+    croix.setAttribute('id', poste + "-ajout")
+    span.appendChild(croix)
+    let names = document.createElement('div')
+    names.setAttribute('class', 'offre-secteur')
+    names.append(secteurName, posteName)
+    newPoste.append(names, span)
     let row = document.querySelector('#choix-poste')
     row.appendChild(newPoste)
 }
 
 function SupPosteAjout(evt) {
+    console.log(evt)
     let element_id = evt.target.id
     let filtres = document.querySelector('#choix-poste')
     for (let i = 0; i < filtres.children.length; i++) {
@@ -187,13 +263,15 @@ function SupPosteAjout(evt) {
             break
         }
     }
+    if (filtres.children.length == 0) {
+        let verifPoste = document.querySelector('#verif-poste')
+        verifPoste.value = ""
+    }
 }
 
-
-function addPoste(e) {
-    // console.log()
-    // parent = e.target.parentNode.parentNode
+function addPoste() {
     let poste = document.querySelector('#select-poste').value
+    let secteur = document.querySelector('#select-cat').value
     let filtres = document.querySelector('#filtre-poste')
     for (let i = 0; i < filtres.children.length; i++) {
         if (filtres.children[i].id === poste) {
@@ -202,19 +280,27 @@ function addPoste(e) {
     }
     let newPoste = document.createElement('div')
     newPoste.setAttribute('class', 'poste-div')
-    newPoste.setAttribute('id', poste)
+    newPoste.setAttribute('id', poste + '-' + secteur)
+    newPoste.setAttribute('poste', poste)
+    newPoste.setAttribute("secteur", secteur)
     let posteName = document.createElement('p')
     posteName.setAttribute('class', 'poste-name')
     posteName.innerHTML = poste
+    let secteurName = document.createElement('p')
+    secteurName.setAttribute('class', 'secteur-name')
+    secteurName.innerHTML = secteur
     let span = document.createElement('span')
     span.setAttribute('class', 'sup-poste pointer')
-    span.setAttribute('id', poste)
+    span.setAttribute('id', poste + '-' + secteur)
     span.addEventListener('click', SupPoste)
     let croix = document.createElement('i')
     croix.setAttribute('class', 'bi-x icon')
-    croix.setAttribute('id', poste)
+    croix.setAttribute('id', poste + '-' + secteur)
     span.appendChild(croix)
-    newPoste.append(posteName, span)
+    let names = document.createElement('div')
+    names.setAttribute('class', 'offre-secteur')
+    names.append(secteurName, posteName)
+    newPoste.append(names, span)
     let row = document.querySelector('#filtre-poste')
     row.appendChild(newPoste)
     filterByPoste()
@@ -240,10 +326,43 @@ function showAdder() {
         div.style.display = 'flex'
     }
     else {
-        fetch('../html/ajouterUtilisateur.html')
+        fetch('../html/ajouterUtilisateur.php')
+            .then(response => response.text())
+            .then(php => {
+                doc.insertAdjacentHTML('beforeend', php);
+            }).then(() => {
+                selectPosteAjout()
+            })
+            .catch(error => {
+                console.error('Une erreur s\'est produite : ', error);
+            });
+    }
+}
+
+function showModifier(evt) {
+    let profileDiv = evt.target.parentElement.parentElement
+    let attributs = profileDiv.children[1].children[1].children
+    let metiers = JSON.parse(profileDiv.getAttribute('metier'))
+    let doc = document.querySelector('#main')
+    let div = document.querySelector('#modifier-window')
+    if (div) {
+        div.style.display = 'flex'
+        document.querySelector('#nom-modif').defaultValue = attributs[0].getAttribute("nom")
+        document.querySelector('#prenom-modif').defaultValue = attributs[0].getAttribute("prenom")
+        document.querySelector('#telephone-modif').defaultValue = attributs[1].innerHTML
+        document.querySelector('#courriel-modif').defaultValue = attributs[2].innerHTML
+        metiers.forEach(metier => {
+            addPosteModif(metier.offre, metier.secteur)
+        })
+    }
+    else {
+        fetch('../html/modifierUtilisateur.php')
             .then(response => response.text())
             .then(html => {
                 doc.insertAdjacentHTML('beforeend', html);
+            }).then(() => {
+                selectPosteModif()
+
             })
             .catch(error => {
                 console.error('Une erreur s\'est produite : ', error);
@@ -254,6 +373,19 @@ function showAdder() {
 function hideAdder() {
     let div = document.querySelector('#adder-window')
     div.style.display = 'none'
+    choixpostes = document.querySelector('#choix-poste')
+    while (choixpostes.firstChild) {
+        choixpostes.removeChild(choixpostes.firstChild)
+    }
+}
+
+function hideModifier() {
+    let div = document.querySelector('#modifier-window')
+    div.style.display = 'none'
+    choixpostes = document.querySelector('#choix-poste-modif')
+    while (choixpostes.firstChild) {
+        choixpostes.removeChild(choixpostes.firstChild)
+    }
 }
 
 function selectPoste() {
@@ -268,7 +400,47 @@ function selectPoste() {
         }
         else {
             if (!changed) {
-                console.log('pf')
+                select_poste.value = options[i].value
+                changed = true
+            }
+            options[i].style.display = 'block'
+        }
+    }
+
+}
+
+function selectPosteModif() {
+    let select = document.querySelector('#select-cat-modif')
+    let value = select.value
+    let select_poste = document.querySelector('#select-poste-modif')
+    let options = select_poste.children
+    let changed = false
+    for (let i = 0; i < options.length; i++) {
+        if (!(options[i].classList[1] == value)) {
+            options[i].style.display = 'none'
+        }
+        else {
+            if (!changed) {
+                select_poste.value = options[i].value
+                changed = true
+            }
+            options[i].style.display = 'block'
+        }
+    }
+}
+
+function selectPosteAjout() {
+    let select = document.querySelector('#select-cat-ajout')
+    let value = select.value
+    let select_poste = document.querySelector('#select-poste-ajout')
+    let options = select_poste.children
+    let changed = false
+    for (let i = 0; i < options.length; i++) {
+        if (!(options[i].classList[1] == value)) {
+            options[i].style.display = 'none'
+        }
+        else {
+            if (!changed) {
                 select_poste.value = options[i].value
                 changed = true
             }
@@ -314,4 +486,174 @@ function deleteSelected() {
     } else {
         alert('Veuillez sélectionner au moins un profil à supprimer.');
     }
+}
+
+function isAdmin() {
+    let options = document.querySelectorAll('.is-admin')
+    for (let i = 0; i < options.length; i++) {
+        if (options[i].classList.contains('not-admin')) {
+            options[i].classList.remove('not-admin')
+            if (options[i].getAttribute('name') == 'addButton') {
+                options[i].setAttribute('onclick', "showAdder()")
+            }
+            if (options[i].getAttribute('name') == 'delButton') {
+                options[i].setAttribute('onclick', "deleteSelected()")
+            }
+        }
+    }
+}
+
+function isNotAdmin() {
+    let options = document.querySelectorAll('.is-admin')
+    for (let i = 0; i < options.length; i++) {
+        if (!options[i].classList.contains('not-admin')) {
+            options[i].classList.add('not-admin')
+            if (options[i].getAttribute('name') == 'addButton' && options[i].getAttribute('onclick')) {
+                options[i].removeAttribute('onclick', "showAdder()")
+            }
+            if (options[i].getAttribute('name') == 'delButton' && options[i].getAttribute('onclick')) {
+                options[i].removeAttribute('onclick', "deleteSelected()")
+            }
+        }
+    }
+}
+
+function tryPoste() {
+    let postes = document.querySelector('#verif-poste')
+    if (postes.value == "") {
+        alert('Veuillez sélectionner au moins un poste')
+    }
+    else {
+        addPostulant()
+    }
+}
+
+function tryPosteModif() {
+    let postes = document.querySelector('#verif-poste-modif')
+    if (postes.value == "") {
+        alert('Veuillez sélectionner au moins un poste')
+    }
+    else {
+        updatePostulant()
+    }
+}
+
+function addCats(dest, options) {
+    let selectCat = document.querySelector(dest)
+    options.forEach(option => {
+        let newOption = document.createElement('option')
+        newOption.setAttribute('value', option.nom_secteur)
+        newOption.innerHTML = option.nom_secteur
+        newOption.classList.add("is-option")
+        selectCat.appendChild(newOption)
+    })
+}
+
+function addOffres(dest, options) {
+    let selectPosteList = document.querySelector(dest)
+    options.forEach(option => {
+        let newOption = document.createElement('option')
+        newOption.setAttribute('value', option.nom_offre)
+        newOption.innerHTML = option.nom_offre
+        newOption.classList.add("is-option")
+        newOption.classList.add(option.nom_secteur)
+        selectPosteList.appendChild(newOption)
+    })
+    if (dest.includes("ajout")) {
+        selectPosteAjout()
+    }
+    else if (dest.includes("modif")) {
+        selectPosteModif()
+    }
+    else {
+        selectPoste()
+    }
+}
+
+// function loadCurrentOffres(offre){
+//     let verifPosteModif = document.querySelector('#verif-poste-modif')
+//     if (verifPosteModif.value == "") {
+//         verifPosteModif.value = "&"
+//     }
+//     let poste = document.querySelector('#select-poste-modif').value
+//     let secteur = document.querySelector('#select-cat-modif').value
+//     let filtres = document.querySelector('#choix-poste-modif')
+//     for (let i = 0; i < filtres.children.length; i++) {
+//         if (filtres.children[i].id === poste + "-modif") {
+//             return
+//         }
+//     }
+//     let newPoste = document.createElement('div')
+//     newPoste.setAttribute('class', 'poste-div')
+//     newPoste.setAttribute('id', poste + "-modif")
+//     newPoste.setAttribute('poste', poste)
+//     newPoste.setAttribute("secteur", secteur)
+//     let posteName = document.createElement('p')
+//     posteName.setAttribute('class', 'poste-name')
+//     posteName.innerHTML = poste
+//     let span = document.createElement('span')
+//     span.setAttribute('class', 'sup-poste pointer')
+//     span.setAttribute('id', poste + "-modif")
+//     span.setAttribute('onclick', "SupPosteModif(event)")
+//     let croix = document.createElement('i')
+//     croix.setAttribute('class', 'bi-x icon')
+//     croix.setAttribute('id', poste + "-modif")
+//     span.appendChild(croix)
+//     newPoste.append(posteName, span)
+//     let row = document.querySelector('#choix-poste-modif')
+//     row.appendChild(newPoste)
+// }
+
+function updatePostulant() {
+    let nom = document.querySelector('#nom-modif').value
+    let prenom = document.querySelector('#prenom-modif').value
+    let telephone = document.querySelector('#telephone-modif').value
+    let courriel = document.querySelector('#courriel-modif').value
+    let postes = document.querySelector('#choix-poste-modif').children
+    let metier = []
+    for (let i = 0; i < postes.length; i++) {
+        metier.push({ "offre": postes[i].getAttribute('poste'), "secteur": postes[i].getAttribute('secteur') })
+    }
+    let person = { "nom": nom, "prenom": prenom, "telephone": telephone, "courriel": courriel, "metier": metier }
+    fetch('../php/update.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ person: person })
+    })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            // Optionnel : recharger la page pour refléter les changements
+            location.reload();
+        })
+        .catch(error => console.error('Erreur:', error));
+}
+
+function addPostulant() {
+    let nom = document.querySelector('#nom-ajout').value
+    let prenom = document.querySelector('#prenom-ajout').value
+    let telephone = document.querySelector('#telephone-ajout').value
+    let courriel = document.querySelector('#courriel-ajout').value
+    let postes = document.querySelector('#choix-poste').children
+    let metier = []
+    for (let i = 0; i < postes.length; i++) {
+        metier.push({ "offre": postes[i].getAttribute('poste'), "secteur": postes[i].getAttribute('secteur') })
+    }
+    let person = { "nom": nom, "prenom": prenom, "telephone": telephone, "courriel": courriel, "metier": metier }
+    fetch('../php/add.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ person: person })
+    })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            // Optionnel : recharger la page pour refléter les changements
+            location.reload();
+        })
+        .catch(error => console.error('Erreur:', error));
 }
