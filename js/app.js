@@ -86,6 +86,9 @@ function changeTheme() {
 
 function showCV(e) {
     var target = e.target
+    if (window.getSelection().toString().length != 0) {
+        return
+    }
     while (!target.classList.contains('is-person')) {
         target = target.parentNode
     }
@@ -337,10 +340,12 @@ function showModifier(evt) {
     let profileDiv = evt.target.parentElement.parentElement
     let attributs = profileDiv.children[1].children[1].children
     let metiers = JSON.parse(profileDiv.getAttribute('metier'))
+    let id_postulant = profileDiv.getAttribute('id_postulant')
     let doc = document.querySelector('#main')
     let div = document.querySelector('#modifier-window')
     if (div) {
         div.style.display = 'flex'
+        div.setAttribute('id_postulant', id_postulant)
         document.querySelector('#nom-modif').defaultValue = attributs[0].getAttribute("nom")
         document.querySelector('#prenom-modif').defaultValue = attributs[0].getAttribute("prenom")
         document.querySelector('#telephone-modif').defaultValue = attributs[1].innerHTML
@@ -456,27 +461,14 @@ function selectAll() {
 }
 function deleteSelected() {
     let checkboxes = document.querySelectorAll('.checkbox')
-    persons = []
+    ids = []
     for (let i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
-            persons.push(checkboxes[i].getAttribute('personName'))
+            ids.push(checkboxes[i].getAttribute('id_postulant'))
         }
     }
-    if (persons.length > 0) {
-        fetch('../php/delete.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ profiles: persons })
-        })
-            .then(response => response.text())
-            .then(data => {
-                alert(data);
-                // Optionnel : recharger la page pour refléter les changements
-                location.reload();
-            })
-            .catch(error => console.error('Erreur:', error));
+    if (ids.length > 0) {
+        window.location.href = "../php/delete_utils.php?nom=" + "&ids=" + JSON.stringify(ids)
     } else {
         alert('Veuillez sélectionner au moins un profil à supprimer.');
     }
@@ -613,26 +605,21 @@ function updatePostulant() {
     let telephone = document.querySelector('#telephone-modif').value
     let courriel = document.querySelector('#courriel-modif').value
     let postes = document.querySelector('#choix-poste-modif').children
+    let cv = document.querySelector('#pdf-file-modif').files.length > 0 ? "../pdfs/" + document.querySelector('#pdf-file-modif').files[0].name : ""
+    let id = document.querySelector('#modifier-window').getAttribute('id_postulant')
     let metier = []
     for (let i = 0; i < postes.length; i++) {
         metier.push({ "offre": postes[i].getAttribute('poste'), "secteur": postes[i].getAttribute('secteur') })
     }
-    let person = { "nom": nom, "prenom": prenom, "telephone": telephone, "courriel": courriel, "metier": metier }
-    fetch('../php/update.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ person: person })
-    })
-        .then(response => response.text())
-        .then(data => {
-            // alert(data);
-            // Optionnel : recharger la page pour refléter les changements
-            location.reload();
-        })
-        .catch(error => console.error('Erreur:', error));
+
+    if (cv != "") {
+        window.location.href = "../php/update_util.php?nom=" + nom + "&prenom=" + prenom + "&telephone=" + telephone + "&courriel=" + courriel + "&cv=" + cv + "&metier=" + JSON.stringify(metier) + "&id=" + id
+    }
+    else {
+        window.location.href = "../php/update_util.php?nom=" + nom + "&prenom=" + prenom + "&telephone=" + telephone + "&courriel=" + courriel + "&id=" + id + "&metier=" + JSON.stringify(metier)
+    }
     hideModifier()
+    return false
 }
 
 function addPostulant() {
@@ -671,6 +658,6 @@ function addPostulant() {
     }
     xhr.send(person);
     // window.location.href = "../php/ajout_util.php?nom=" + nom + "&prenom=" + prenom + "&telephone=" + telephone + "&courriel=" + courriel + "&cv=" + cv + "&metier=" + JSON.stringify(metier)
-    return false
     hideAdder()
+    return false
 }

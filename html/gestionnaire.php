@@ -73,6 +73,7 @@
     postulant.prenom AS prenom,
     postulant.email AS email,
     postulant.telephone AS telephone,
+    postulant.id_postulant AS id_postulant,
     cv.pdf AS CvPath,
     CONCAT('[', GROUP_CONCAT(
         JSON_OBJECT(
@@ -103,6 +104,7 @@ GROUP BY
                             "email" => $row['email'],
                             "cv" => $row['CvPath'],
                             "offres" => $row['offres_secteurs'],
+                            "id" => $row['id_postulant'],
                         );
                         array_push($list, $person);
                     }

@@ -91,6 +91,7 @@
                 font-size: small;
                 display: flex;
                 justify-content: space-between;
+                max-width: 10rem;
             }
         }
 

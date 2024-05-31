@@ -16,6 +16,7 @@ function getList(L) {
         checkbox.setAttribute("type", "checkbox")
         checkbox.setAttribute("class", "checkbox")
         checkbox.setAttribute("personName", L[i].prenom + ' ' + L[i].nom)
+        checkbox.setAttribute("id_postulant", L[i].id)
         checkbox.addEventListener("click", function (event) {
             event.stopPropagation();
         })
@@ -55,6 +56,7 @@ function getList(L) {
         div1.setAttribute("metier", "Developpeur")
         div1.setAttribute("cv", L[i].cv)
         div1.setAttribute("metier", JSON.stringify(JSON.parse(L[i].offres)))
+        div1.setAttribute("id_postulant", L[i].id)
         div_primary.appendChild(div1)
     }
     main.appendChild(div_primary)
