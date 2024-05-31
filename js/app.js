@@ -639,6 +639,14 @@ function addPostulant() {
     let nom = document.querySelector('#nom-form').value
     let prenom = document.querySelector('#prenom-form').value
     let telephone = document.querySelector('#telephone-form').value
+    let liste = document.querySelector('.people-list')
+    for (let i = 0; i < liste.children.length; i++) {
+        let attributs = liste.children[i].children[1].children[1].children
+        if (attributs[0].getAttribute('nom').toLowerCase() == nom.toLowerCase() && attributs[0].getAttribute('prenom').toLowerCase() == prenom.toLowerCase() && attributs[1].innerHTML == telephone) {
+            alert('Ce postulant déjà')
+            return
+        }
+    }
     let courriel = document.querySelector('#courriel-form').value
     let postes = document.querySelector('#choix-poste').children
     let cv = "../pdfs/" + document.querySelector('#pdf-file').files[0].name
@@ -653,32 +661,16 @@ function addPostulant() {
     person.append('courriel', courriel)
     person.append('cv', cv)
     person.append('metier', JSON.stringify(metier))
-    let personne = { "nom": nom, "prenom": prenom, "telephone": telephone, "courriel": courriel, "cv": cv, "metier": metier }
     // console.log(person.get('nom'), person.get('prenom'), person.get('telephone'), person.get('courriel'), person.get('cv'), person.get('metier'))
 
-    // var xhr = new XMLHttpRequest();
-    // xhr.open("post", "../php/ajout_util.php");
-    // xhr.onload = function () {
-    //     // console.log(this.responseText);
-    //     location.reload();
-    // }
-    // xhr.send(person);
-    window.location.href = "../php/ajout_util.php?nom=" + nom + "&prenom=" + prenom + "&telephone=" + telephone + "&courriel=" + courriel + "&cv=" + cv + "&metier=" + JSON.stringify(metier)
-    // return false
-    // fetch('../php/ajout_util.php', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(person)
-    // })
-    //     .then(response => response.text())
-    //     .then(data => {
-    //         // console.log(data)
-    //         // alert(data);
-    //         // Optionnel : recharger la page pour refléter les changements
-    //         // location.reload();
-    //     })
-    //     .catch(error => console.error('Erreur:', error));
+    var xhr = new XMLHttpRequest();
+    xhr.open("post", "../php/ajout_util.php");
+    xhr.onload = function () {
+        // console.log(this.responseText);
+        location.reload();
+    }
+    xhr.send(person);
+    // window.location.href = "../php/ajout_util.php?nom=" + nom + "&prenom=" + prenom + "&telephone=" + telephone + "&courriel=" + courriel + "&cv=" + cv + "&metier=" + JSON.stringify(metier)
+    return false
     hideAdder()
 }

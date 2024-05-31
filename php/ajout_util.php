@@ -22,14 +22,12 @@
     }
     try {
         require ("connexion.inc.php");
-
-        print_r($_GET);
-        $nom = $_GET['nom'];
-        $prenom = $_GET['prenom'];
-        $telephone = $_GET['telephone'];
-        $courriel = $_GET['courriel'];
-        $cv = $_GET['cv'];
-        $offres = json_decode($_GET['metier'], true);
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        $telephone = $_POST['telephone'];
+        $courriel = $_POST['courriel'];
+        $cv = $_POST['cv'];
+        $offres = json_decode($_POST['metier'], true);
 
         try {
             $pdo->beginTransaction();
@@ -96,7 +94,6 @@
 
             // Validez la transaction
             $pdo->commit();
-            header("Location: ../html/gestionnaire.php");
             //echo "Le postulant a été inséré avec succès.";
         } catch (Exception $e) {
             // En cas d'erreur, annuler la transaction
