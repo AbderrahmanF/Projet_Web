@@ -67,7 +67,6 @@ function hideNavbar() {
 }
 
 function changeTheme() {
-    console.log(localStorage.getItem('gestionnaire_theme'))
     let head = document.querySelector(':root')
     let sun = document.querySelector('.bi-sun')
     let moon = document.querySelector('.bi-moon')
@@ -90,8 +89,6 @@ function showCV(e) {
     while (!target.classList.contains('is-person')) {
         target = target.parentNode
     }
-    console.log(target)
-    console.log(target.getAttribute("cv"))
     var iframe = document.querySelector(".pdf-text")
     iframe.src = target.getAttribute("cv")
     var view = document.querySelector(".pdf-screen")
@@ -228,12 +225,9 @@ function addPosteAjout() {
     newPoste.setAttribute('id', poste + "-ajout")
     newPoste.setAttribute('poste', poste)
     newPoste.setAttribute("secteur", secteur)
-    let posteName = document.createElement('input')
+    let posteName = document.createElement('p')
     posteName.setAttribute('class', 'poste-name')
-    posteName.value = poste
-    posteName.setAttribute('disabled', 'true')
-    posteName.setAttribute('name', 'poste')
-    posteName.setAttribute('type', 'text')
+    posteName.innerHTML = poste
     let secteurName = document.createElement('p')
     secteurName.setAttribute('class', 'secteur-name')
     secteurName.innerHTML = secteur
@@ -374,7 +368,7 @@ function hideAdder() {
     let div = document.querySelector('#adder-window')
     div.style.display = 'none'
     choixpostes = document.querySelector('#choix-poste')
-    while (choixpostes.firstChild) {
+    while (choixpostes && choixpostes.firstChild) {
         choixpostes.removeChild(choixpostes.firstChild)
     }
 }
@@ -520,8 +514,13 @@ function isNotAdmin() {
 
 function tryPoste() {
     let postes = document.querySelector('#verif-poste')
-    if (postes.value == "") {
-        alert('Veuillez sélectionner au moins un poste')
+    let nom = document.querySelector('#nom-form')
+    let prenom = document.querySelector('#prenom-form')
+    let telephone = document.querySelector('#telephone-form')
+    let courriel = document.querySelector('#courriel-form')
+    let cv = document.querySelector('#pdf-file')
+    if (postes.value == "" || nom.value == "" || prenom.value == "" || telephone.value == "" || courriel.value == "" || cv.files.length == 0) {
+        alert('Veuillez remplir tous les champs obligatoires')
     }
     else {
         addPostulant()
@@ -530,8 +529,12 @@ function tryPoste() {
 
 function tryPosteModif() {
     let postes = document.querySelector('#verif-poste-modif')
-    if (postes.value == "") {
-        alert('Veuillez sélectionner au moins un poste')
+    let nom = document.querySelector('#nom-modif')
+    let prenom = document.querySelector('#prenom-modif')
+    let telephone = document.querySelector('#telephone-modif')
+    let courriel = document.querySelector('#courriel-modif')
+    if (postes.value == "" || nom.value == "" || prenom.value == "" || telephone.value == "" || courriel.value == "") {
+        alert('Veuillez remplir tous les champs obligatoires')
     }
     else {
         updatePostulant()
@@ -624,7 +627,7 @@ function updatePostulant() {
     })
         .then(response => response.text())
         .then(data => {
-            alert(data);
+            // alert(data);
             // Optionnel : recharger la page pour refléter les changements
             location.reload();
         })
@@ -633,30 +636,49 @@ function updatePostulant() {
 }
 
 function addPostulant() {
-    let nom = document.querySelector('#nom').value
-    let prenom = document.querySelector('#prenom').value
-    let telephone = document.querySelector('#telephone').value
-    let courriel = document.querySelector('#courriel').value
+    let nom = document.querySelector('#nom-form').value
+    let prenom = document.querySelector('#prenom-form').value
+    let telephone = document.querySelector('#telephone-form').value
+    let courriel = document.querySelector('#courriel-form').value
     let postes = document.querySelector('#choix-poste').children
-    let cv = document.querySelector('#pdf-file').files[0].name
+    let cv = "../pdfs/" + document.querySelector('#pdf-file').files[0].name
     let metier = []
     for (let i = 0; i < postes.length; i++) {
         metier.push({ "offre": postes[i].getAttribute('poste'), "secteur": postes[i].getAttribute('secteur') })
     }
-    let person = { "nom": nom, "prenom": prenom, "telephone": telephone, "courriel": courriel, "cv": cv, "metier": metier }
-    fetch('../php/add.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ person: person })
-    })
-        .then(response => response.text())
-        .then(data => {
-            alert(data);
-            // Optionnel : recharger la page pour refléter les changements
-            location.reload();
-        })
-        .catch(error => console.error('Erreur:', error));
+    let person = new FormData()
+    person.append('nom', nom)
+    person.append('prenom', prenom)
+    person.append('telephone', telephone)
+    person.append('courriel', courriel)
+    person.append('cv', cv)
+    person.append('metier', JSON.stringify(metier))
+    let personne = { "nom": nom, "prenom": prenom, "telephone": telephone, "courriel": courriel, "cv": cv, "metier": metier }
+    // console.log(person.get('nom'), person.get('prenom'), person.get('telephone'), person.get('courriel'), person.get('cv'), person.get('metier'))
+
+    // var xhr = new XMLHttpRequest();
+    // xhr.open("post", "../php/ajout_util.php");
+    // xhr.onload = function () {
+    //     // console.log(this.responseText);
+    //     location.reload();
+    // }
+    // xhr.send(person);
+    window.location.href = "../php/ajout_util.php?nom=" + nom + "&prenom=" + prenom + "&telephone=" + telephone + "&courriel=" + courriel + "&cv=" + cv + "&metier=" + JSON.stringify(metier)
+    // return false
+    // fetch('../php/ajout_util.php', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(person)
+    // })
+    //     .then(response => response.text())
+    //     .then(data => {
+    //         // console.log(data)
+    //         // alert(data);
+    //         // Optionnel : recharger la page pour refléter les changements
+    //         // location.reload();
+    //     })
+    //     .catch(error => console.error('Erreur:', error));
     hideAdder()
 }

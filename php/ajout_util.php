@@ -1,89 +1,113 @@
-<?php
-// Adresse du serveur SQL
-$host = 'localhost';
-// Nom d'utilisateur MySQL
-$utilisateur = 'webProjet';
-// Mot de passe MySQL
-$mdp = 'root';
-// Nom de la base de données
-$base_de_donnees = 'gestioncv'; 
+<html lang="fr-FR">
 
-// Connexion à la base de données
-$connexion = new mysqli($host, $utilisateur, $mdp, $base_de_donnees);
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/root.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="../js/app.js"></script>
+</head>
 
-// Vérifie la connexion
-if ($connexion->connect_error) {
-    die("Échec de la connexion : " . $connexion->connect_error);
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit']) && $_POST['submit'] == 'ajouter') {
-    // Récupère les données du formulaire
-    $nom = $_POST['nom'] ?? '';
-    $prenom = $_POST['prenom'] ?? '';
-    $telephone = $_POST['telephone'] ?? '';
-    $courriel = $_POST['courriel'] ?? '';
-
-    // Vérifier si un fichier PDF a été téléchargé
-    if (!isset($_FILES['pdf_file']) || $_FILES['pdf_file']['error'] != UPLOAD_ERR_OK) {
-        die('Erreur lors du téléchargement du fichier PDF.');
+<body>
+    <?php
+    // Adresse du serveur SQLfunction console_log($output, $with_script_tags = true)
+    function console_log($output, $with_script_tags = true)
+    {
+        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+            ');';
+        if ($with_script_tags) {
+            $js_code = '<script>' . $js_code . '</script>';
+        }
+        echo $js_code;
     }
-
-    // Gestion du fichier PDF
-    $pdf_file = $_FILES['pdf_file'];
-    $upload_dir = 'uploads/';
-
-    // Vérifier et créer le répertoire d'upload s'il n'existe pas
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
-    }
-
-    // Nom du fichier PDF sur le serveur
-    $pdf_path = $upload_dir . basename($pdf_file['name']);
-
-    // Déplacer le fichier téléchargé vers le répertoire d'upload
-    if (!move_uploaded_file($pdf_file['tmp_name'], $pdf_path)) {
-        die('Erreur lors du déplacement du fichier PDF.');
-    }
-
-    // Début de la transaction
-    $connexion->begin_transaction();
-
     try {
-        // Insertion du CV dans la table `cv`
-        $cv_query = "INSERT INTO cv (PDF) VALUES (?)";
-        $stmt_cv = $connexion->prepare($cv_query);
-        if ($stmt_cv === false) {
-            throw new Exception('Erreur de préparation (CV) : ' . $connexion->error);
-        }
-        $stmt_cv->bind_param("s", $pdf_path);
-        if (!$stmt_cv->execute()) {
-            throw new Exception('Erreur lors de l\'insertion du CV : ' . $stmt_cv->error);
-        }
-        $id_cv = $stmt_cv->insert_id;
+        require ("connexion.inc.php");
 
-        // Insertion du postulant dans la table `postulant`
-        $postulant_query = "INSERT INTO postulant (Nom, Prenom, Telephone, Email, Id_Cv) VALUES (?, ?, ?, ?, ?)";
-        $stmt_postulant = $connexion->prepare($postulant_query);
-        if ($stmt_postulant === false) {
-            throw new Exception('Erreur de préparation (Postulant) : ' . $connexion->error);
-        }
-        $stmt_postulant->bind_param("ssssi", $nom, $prenom, $telephone, $courriel, $id_cv);
-        if (!$stmt_postulant->execute()) {
-            throw new Exception('Erreur lors de l\'insertion du postulant : ' . $stmt_postulant->error);
+        print_r($_GET);
+        $nom = $_GET['nom'];
+        $prenom = $_GET['prenom'];
+        $telephone = $_GET['telephone'];
+        $courriel = $_GET['courriel'];
+        $cv = $_GET['cv'];
+        $offres = json_decode($_GET['metier'], true);
+
+        try {
+            $pdo->beginTransaction();
+
+            // Insérer le CV
+            $sql = "INSERT INTO cv (pdf) VALUES (:cv)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':cv', $cv);
+            $stmt->execute();
+            $id_cv = $pdo->lastInsertId();
+
+            // Insérez les informations du postulant dans la table `postulant`
+            $sql = "INSERT INTO postulant (nom, prenom, telephone, email, id_cv) VALUES (:nom, :prenom, :telephone, :courriel, :id_cv)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':prenom', $prenom);
+            $stmt->bindParam(':telephone', $telephone);
+            $stmt->bindParam(':courriel', $courriel);
+            $stmt->bindParam(':id_cv', $id_cv);
+
+            $stmt->execute();
+
+            // Récupérer l'ID du postulant inséré
+            $id_postulant = $pdo->lastInsertId();
+
+            // Insérer les offres auxquelles le postulant postule dans la table `postuler`
+            foreach ($offres as $offre) {
+                // $offre_data = json_decode($offre, true);
+                print_r($offre);
+                $nom_offre = $offre['offre'];
+                $nom_secteur = $offre['secteur'];
+
+                // Recherche de l'ID du secteur correspondant au nom donné
+                $sql = "SELECT id_secteur FROM secteurs WHERE nom_secteur = :nom_secteur";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':nom_secteur', $nom_secteur);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (!$row) {
+                    throw new Exception("Secteur non trouvé pour le nom donné : $nom_secteur");
+                }
+                console_log($row);
+                $id_secteur = $row['id_secteur'];
+
+                // Recherche de l'ID de l'offre correspondant au nom donné et au secteur donné
+                $sql = "SELECT id_offre FROM offres WHERE nom_poste = :nom_offre AND id_secteur = :id_secteur";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':nom_offre', $nom_offre);
+                $stmt->bindParam(':id_secteur', $id_secteur);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (!$row) {
+                    throw new Exception("Offre non trouvée pour le nom donné : $nom_offre et le secteur donné : $nom_secteur");
+                }
+                $id_offre = $row['id_offre'];
+
+                // Insérer l'entrée correspondante dans la table `postuler`
+                $sql = "INSERT INTO postuler (id_postulant, id_offre) VALUES (:id_postulant, :id_offre)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":id_postulant", $id_postulant);
+                $stmt->bindParam(":id_offre", $id_offre);
+                $stmt->execute();
+            }
+
+            // Validez la transaction
+            $pdo->commit();
+            header("Location: ../html/gestionnaire.php");
+            //echo "Le postulant a été inséré avec succès.";
+        } catch (Exception $e) {
+            // En cas d'erreur, annuler la transaction
+            $connexion->rollback();
+            echo 'Erreur : ' . $e->getMessage();
         }
 
-        // Valider la transaction
-        $connexion->commit();
-        echo "Nouvel enregistrement créé avec succès";
-    } catch (Exception $e) {
-        // En cas d'erreur, annuler la transaction
-        $connexion->rollback();
-        echo 'Erreur : ' . $e->getMessage();
+    } catch (PDOException $e) {
+        die("Erreur: " . $e->getMessage());
     }
+    ?>
+</body>
 
-    // Fermer les statements et la connexion
-    $stmt_cv->close();
-    $stmt_postulant->close();
-    $connexion->close();
-}
-?>
+</html>

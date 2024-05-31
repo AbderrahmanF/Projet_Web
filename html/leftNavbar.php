@@ -9,6 +9,29 @@
     <script src="../js/admin.js"></script>
     <title>leftNavbar</title>
 </head>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let theme = '';
+        if (localStorage.getItem('gestionnaire_theme')) {
+            theme = localStorage.getItem('gestionnaire_theme')
+            myRoot = document.documentElement
+            myRoot.classList.add(theme)
+        }
+        let head = document.querySelector(':root')
+        let sun = document.querySelector('.bi-sun')
+        let moon = document.querySelector('.bi-moon')
+        if (!head.classList.contains('is-dark') && sun && moon) {
+            sun.classList.add('is-hidden')
+            moon.classList.remove('is-hidden')
+            localStorage.setItem('gestionnaire_theme', '')
+
+        } else if (sun && moon) {
+            sun.classList.remove('is-hidden')
+            moon.classList.add('is-hidden')
+            localStorage.setItem('gestionnaire_theme', 'is-dark')
+        }
+    })
+</script>
 
 <body>
     <div class="left-navbar">
@@ -49,11 +72,20 @@
                     }
                     echo $js_code;
                 }
-                $select_query = "SELECT droits from utilisateurs WHERE username = 'kamaury'";
-                $result = $pdo->query($select_query);
+                session_start();
+                $post_data = $_SESSION['post_data'];
+                // Utilisez les données POST selon vos besoins
+                // print_r($post_data);
+                // Nettoyer les données POST de la session après utilisation si nécessaire
+                $username = $post_data["User"];
+                $select_query = "SELECT droits from utilisateurs WHERE username = :username;";
+                $result = $pdo->prepare($select_query);
+                $result->bindParam(':username', $username, PDO::PARAM_STR);
+                $result->execute();
                 $result->setFetchMode(PDO::FETCH_ASSOC);
                 $rows = $result->fetchAll();
-                if ($rows[0]["droits"] == "admin") {
+                // print_r($rows[0]["droits"]);
+                if ($rows[0]["droits"] == "Admin") {
                     echo '<script>isAdmin()</script>';
                 } else {
                     echo '<script>isNotAdmin()</script>';
@@ -98,7 +130,7 @@
                 '[',
                 GROUP_CONCAT(
                     JSON_OBJECT(
-                        'nom_offre', offre.nom_offre,
+                        'nom_offre', offres.nom_poste,
                         'nom_secteur', secteurs.nom_secteur
                     )
                     SEPARATOR ','
@@ -106,9 +138,9 @@
                 ']'
             ) AS offres
         FROM 
-            offre
+            offres
         INNER JOIN 
-            secteurs ON offre.id_secteur = secteurs.id_secteur
+            secteurs ON offres.id_secteur = secteurs.id_secteur
     ) AS offres;";
                         $result = $pdo->query($select_query);
                         $result->setFetchMode(PDO::FETCH_ASSOC);

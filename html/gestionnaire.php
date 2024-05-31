@@ -76,26 +76,26 @@
     cv.pdf AS CvPath,
     CONCAT('[', GROUP_CONCAT(
         JSON_OBJECT(
-            'offre', offre.nom_offre,
+            'offre', offres.nom_poste,
             'secteur', secteurs.nom_secteur
-        ) ORDER BY offre.nom_offre SEPARATOR ', '), ']') AS offres_secteurs
+        ) ORDER BY offres.nom_poste SEPARATOR ', '), ']') AS offres_secteurs
 FROM 
     postulant
 INNER JOIN 
     postuler ON postulant.id_postulant = postuler.id_postulant
 INNER JOIN 
-    offre ON postuler.id_offre = offre.id_offre
+    offres ON postuler.id_offre = offres.id_offre
 INNER JOIN 
-    secteurs ON offre.id_secteur = secteurs.id_secteur
+    secteurs ON offres.id_secteur = secteurs.id_secteur
 INNER JOIN 
     cv ON postulant.id_cv = cv.id_cv
 GROUP BY 
     postulant.id_postulant;";
-                    $res = $pdo->query($select_query);
-                    $res->setFetchMode(PDO::FETCH_ASSOC);
+                    $result = $pdo->query($select_query);
+                    $result->setFetchMode(PDO::FETCH_ASSOC);
+                    $rows = $result->fetchAll();
                     $list = array();
-                    foreach ($res as $row) {
-                        // console_log($row);
+                    foreach ($rows as $row) {
                         $person = array(
                             "prenom" => $row['prenom'],
                             "nom" => $row['nom'],
@@ -108,7 +108,7 @@ GROUP BY
                     }
                     $list = json_encode($list);
                     echo '<script>getList(' . $list . ')</script>';
-                    $res->closeCursor();
+                    $result->closeCursor();
                 } catch (PDOException $e) {
                     die("Erreur: " . $e->getMessage());
                 }

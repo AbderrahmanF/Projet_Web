@@ -17,13 +17,13 @@
             <form class="form-adder">
                 <h2 class="is-title no-top">Formulaire d'ajout</h2>
                 <!-- <label class="is-label" for="#nom">Nom</label> -->
-                <input id="nom" name="nom" class="is-input" type="text" placeholder="Nom" required>
+                <input id="nom-form" name="nom" class="is-input" type="text" placeholder="Nom" required>
                 <!-- <label class="is-label" for="#prenom">Prenom</label> -->
-                <input id="prenom" name="prenom" class="is-input" type="text" placeholder="Prénom" required>
+                <input id="prenom-form" name="prenom" class="is-input" type="text" placeholder="Prénom" required>
                 <!-- <label class="is-label" for="#telephone">Téléphone</label> -->
-                <input id="telephone" name="telephone" class="is-input" type="text" placeholder="Téléphone" required>
+                <input id="telephone-form" name="telephone" class="is-input" type="text" placeholder="Téléphone" required>
                 <!-- <label class="is-label" for="#courriel">Courriel</label> -->
-                <input id="courriel" name="courriel" class="is-input" type="text" placeholder="Courriel" required>
+                <input id="courriel-form" name="courriel" class="is-input" type="text" placeholder="Courriel" required>
                 <div class="flex column gap-5 is-left cent">
                     <p class="is-label" for="#pdf-file">
                         CV :
@@ -60,7 +60,7 @@
                                     '[',
                                     GROUP_CONCAT(
                                         JSON_OBJECT(
-                                            'nom_offre', offre.nom_offre,
+                                            'nom_offre', offres.nom_poste,
                                             'nom_secteur', secteurs.nom_secteur
                                         )
                                         SEPARATOR ','
@@ -68,9 +68,9 @@
                                     ']'
                                 ) AS offres
                             FROM 
-                                offre
+                                offres
                             INNER JOIN 
-                                secteurs ON offre.id_secteur = secteurs.id_secteur
+                                secteurs ON offres.id_secteur = secteurs.id_secteur
                         ) AS offres;";
                         $result = $pdo->query($select_query);
                         $result->setFetchMode(PDO::FETCH_ASSOC);

@@ -1,7 +1,7 @@
 <?php
 $username = "root"; // Utilisateur de la BD
 $password = ""; // Mot de passe
-$db_name = "cv"; // Nom de la BD
+$db_name = "projet_ava_bdd"; // Nom de la BD
 try {
     $pdo = new PDO(
         "mysql:host=localhost;dbname=$db_name",

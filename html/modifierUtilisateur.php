@@ -59,7 +59,7 @@
                 '[',
                 GROUP_CONCAT(
                     JSON_OBJECT(
-                        'nom_offre', offre.nom_offre,
+                        'nom_offre', offres.nom_poste,
                         'nom_secteur', secteurs.nom_secteur
                     )
                     SEPARATOR ','
@@ -67,9 +67,9 @@
                 ']'
             ) AS offres
         FROM 
-            offre
+            offres
         INNER JOIN 
-            secteurs ON offre.id_secteur = secteurs.id_secteur
+            secteurs ON offres.id_secteur = secteurs.id_secteur
     ) AS offres;";
                         $result = $pdo->query($select_query);
                         $result->setFetchMode(PDO::FETCH_ASSOC);
