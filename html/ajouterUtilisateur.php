@@ -21,7 +21,8 @@
                 <!-- <label class="is-label" for="#prenom">Prenom</label> -->
                 <input id="prenom-form" name="prenom" class="is-input" type="text" placeholder="Prénom" required>
                 <!-- <label class="is-label" for="#telephone">Téléphone</label> -->
-                <input id="telephone-form" name="telephone" class="is-input" type="text" placeholder="Téléphone" required>
+                <input id="telephone-form" name="telephone" class="is-input" type="text" placeholder="Téléphone"
+                    required>
                 <!-- <label class="is-label" for="#courriel">Courriel</label> -->
                 <input id="courriel-form" name="courriel" class="is-input" type="text" placeholder="Courriel" required>
                 <div class="flex column gap-5 is-left cent">
@@ -31,9 +32,10 @@
                     <input id="pdf-file" class="pointer" name="cv" type="file" accept="application/pdf" required>
                 </div>
                 <div class="is-centered cent">
-                    <select name="select-cat" id="select-cat-ajout" class="is-select" onchange="selectPosteAjout()">
+                    <select name="select-cat" id="select-cat-ajout" class="is-select select-cat"
+                        onchange="selectPoste('#select-cat-ajout','#select-poste-ajout')">
                     </select>
-                    <select name="select-poste" id="select-poste-ajout" class="is-select">
+                    <select name="select-poste" id="select-poste-ajout" class="is-select select-poste">
                     </select>
                     <?php
                     try {
@@ -93,7 +95,6 @@
                 <div id="choix-poste" name="postes">
                 </div>
                 <p onclick="tryPoste()" class="is-button cent">Ajouter</p>
-                <input type="text" required name="" id="verif-poste">
             </form>
         </div>
     </div>

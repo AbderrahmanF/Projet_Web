@@ -59,56 +59,63 @@
                     </div>
                 </div>
             </div>
-
-            <?php
-            try {
-                require ("../php/connexion.inc.php");
-                function console_log($output, $with_script_tags = true)
-                {
-                    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
-                        ');';
-                    if ($with_script_tags) {
-                        $js_code = '<script>' . $js_code . '</script>';
-                    }
-                    echo $js_code;
-                }
-                session_start();
-                $post_data = $_SESSION['post_data'];
-                // Utilisez les données POST selon vos besoins
-                // print_r($post_data);
-                // Nettoyer les données POST de la session après utilisation si nécessaire
-                $username = $post_data["User"];
-                $select_query = "SELECT droits from utilisateurs WHERE username = :username;";
-                $result = $pdo->prepare($select_query);
-                $result->bindParam(':username', $username, PDO::PARAM_STR);
-                $result->execute();
-                $result->setFetchMode(PDO::FETCH_ASSOC);
-                $rows = $result->fetchAll();
-                // print_r($rows[0]["droits"]);
-                if ($rows[0]["droits"] == "Admin") {
-                    echo '<script>isAdmin()</script>';
-                } else {
-                    echo '<script>isNotAdmin()</script>';
-                }
-            } catch (PDOException $e) {
-                die("Erreur: " . $e->getMessage());
-            }
-            ?>
         </div>
+        <div class="row" id="admin-options">
+            <div class="flex column navbarRow">
+                <button class="is-button is-admin not-admin cent" name="offerButton">Gérer offres</button>
+            </div>
+        </div>
+        <?php
+        try {
+            require ("../php/connexion.inc.php");
+            function console_log($output, $with_script_tags = true)
+            {
+                $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+                    ');';
+                if ($with_script_tags) {
+                    $js_code = '<script>' . $js_code . '</script>';
+                }
+                echo $js_code;
+            }
+            session_start();
+            $post_data = $_SESSION['post_data'];
+            // Utilisez les données POST selon vos besoins
+            // print_r($post_data);
+            // Nettoyer les données POST de la session après utilisation si nécessaire
+            $username = $post_data["User"];
+            $select_query = "SELECT droits from utilisateurs WHERE username = :username;";
+            $result = $pdo->prepare($select_query);
+            $result->bindParam(':username', $username, PDO::PARAM_STR);
+            $result->execute();
+            $result->setFetchMode(PDO::FETCH_ASSOC);
+            $rows = $result->fetchAll();
+            // print_r($rows[0]["droits"]);
+            if ($rows[0]["droits"] == "Admin") {
+                echo '<script>isAdmin()</script>';
+            } else {
+                echo '<script>isNotAdmin()</script>';
+            }
+        } catch (PDOException $e) {
+            die("Erreur: " . $e->getMessage());
+        }
+        ?>
         <div class="row">
             <div class="flex column navbarRow">
                 <h3 class="is-title">Filtrer les postes</h3>
                 <div class="is-centered ">
-                    <select name="select-cat " id="select-cat" class="is-select" onchange="selectPoste()">
+                    <select name="select-cat " id="select-cat" class="is-select select-cat"
+                        onchange="selectPoste('#select-cat','#select-poste')">
                     </select>
                     <select name="select-poste " id="select-poste" class="is-select">
-
                     </select>
-                    <?php
-                    try {
-                        require ("../php/connexion.inc.php");
-
-                        $select_query = "SELECT 
+                    <button class="submit-poste is-button pointer" onclick="addPoste()">Ajouter</button>
+                </div>
+            </div>
+        </div>
+        <?php
+        try {
+            require ("../php/connexion.inc.php");
+            $select_query = "SELECT 
     (
         SELECT 
             CONCAT(
@@ -142,25 +149,21 @@
         INNER JOIN 
             secteurs ON offres.id_secteur = secteurs.id_secteur
     ) AS offres;";
-                        $result = $pdo->query($select_query);
-                        $result->setFetchMode(PDO::FETCH_ASSOC);
-                        $rows = $result->fetchAll();
-                        $secteurs = array();
-                        $offres = array();
-                        foreach ($rows as $row) {
-                            // console_log($row["offres"]);
-                            echo "<script>addCats('#select-cat'," . $row["secteurs"] . ");
+            $result = $pdo->query($select_query);
+            $result->setFetchMode(PDO::FETCH_ASSOC);
+            $rows = $result->fetchAll();
+            $secteurs = array();
+            $offres = array();
+            foreach ($rows as $row) {
+                // console_log($row["offres"]);
+                echo "<script>addCats('#select-cat'," . $row["secteurs"] . ");
                             addOffres('#select-poste'," . $row["offres"] . ")
                             </script>";
-                        }
-                    } catch (PDOException $e) {
-                        die("Erreur: " . $e->getMessage());
-                    }
-                    ?>
-                    <button class="submit-poste is-button pointer" onclick="addPoste()">Ajouter</button>
-                </div>
-            </div>
-        </div>
+            }
+        } catch (PDOException $e) {
+            die("Erreur: " . $e->getMessage());
+        }
+        ?>
         <div class="row">
             <div id="filtre-poste">
             </div>

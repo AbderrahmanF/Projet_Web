@@ -12,8 +12,8 @@
     height: 100%;
     width: var(--navbar-width);
     transition-duration: 400ms;
-    overflow: hidden;
-    flex-wrap: wrap;
+    overflow: auto;
+    /* flex-wrap: wrap; */
 }
 
 body {

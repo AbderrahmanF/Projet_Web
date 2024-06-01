@@ -53,9 +53,14 @@ function getList(L) {
         div1.setAttribute('class', 'flex column is-person')
         div1_2.setAttribute('class', 'flex column person-attribut')
         div1.addEventListener('click', showCV)
-        div1.setAttribute("metier", "Developpeur")
+        // div1.setAttribute("metier", "Developpeur")
         div1.setAttribute("cv", L[i].cv)
-        div1.setAttribute("metier", JSON.stringify(JSON.parse(L[i].offres)))
+        if (JSON.parse(L[i].offres)[0].offre != null) {
+            div1.setAttribute("metier", JSON.stringify(JSON.parse(L[i].offres)))
+        }
+        else {
+            div1.setAttribute("metier", "[]")
+        }
         div1.setAttribute("id_postulant", L[i].id)
         div_primary.appendChild(div1)
     }

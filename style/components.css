@@ -48,6 +48,10 @@
     justify-content: none;
 }
 
+.wrap {
+    flex-wrap: wrap;
+}
+
 .is-form {
     display: flex;
     width: 70%;
@@ -177,7 +181,7 @@ input::placeholder {
 }
 
 .is-button {
-    height: 2rem;
+    height: 3rem;
     font-size: var(--text-size);
     min-width: fit-content;
     width: 30%;
@@ -212,7 +216,8 @@ input::placeholder {
 }
 
 #adder-window,
-#modifier-window {
+#modifier-window,
+#offer-window {
     position: fixed;
     top: 0;
     left: 0;
@@ -227,7 +232,8 @@ input::placeholder {
 }
 
 #user-adder,
-#user-modifier {
+#user-modifier,
+#offer-gestion {
     background-color: white;
     width: 40rem;
     height: max-content;
@@ -237,7 +243,8 @@ input::placeholder {
     background-color: var(--box-background);
 }
 
-.form-adder {
+.form-adder,
+.offer-adder {
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -401,6 +408,10 @@ input::placeholder {
     /* justify-content: space-around; */
     /* align-items: center; */
     height: fit-content;
+
+    &.gestion-offres {
+        margin-top: 2rem;
+    }
 }
 
 .is-list-item {
@@ -409,7 +420,7 @@ input::placeholder {
 }
 
 .is-hidden {
-    display: none;
+    display: none !important;
 }
 
 .icon {
@@ -484,7 +495,7 @@ input::placeholder {
 
 
 .cent {
-    width: 100%;
+    width: 100% !important;
     justify-content: flex-start;
 }
 
@@ -525,7 +536,23 @@ p {
 
 p {
     &.is-button {
+        height: 3rem;
         text-align: center;
         align-content: center;
     }
+}
+
+.warning {
+    color: transparent;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.select-poste {
+    border-radius: 0 !important;
+}
+
+.select-right {
+    border-radius: 0 5px 5px 0 !important;
 }

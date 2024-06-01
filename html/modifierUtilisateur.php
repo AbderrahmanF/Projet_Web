@@ -26,10 +26,10 @@
                     <input id="pdf-file-modif" class="pointer" type="file" accept="application/pdf">
                 </div>
                 <div class="is-centered">
-                    <select name="select-cat-modif" id="select-cat-modif" class="is-select"
-                        onchange="selectPosteModif()">
+                    <select name="select-cat-modif" id="select-cat-modif" class="is-select select-cat"
+                        onchange="selectPoste('#select-cat-modif','#select-poste-modif')">
                     </select>
-                    <select name="select-poste-modif" id="select-poste-modif" class="is-select">
+                    <select name="select-poste-modif" id="select-poste-modif" class="is-select select-poste">
 
                         <option class="is-option Commercial" value="Vendeur">Vendeur</option>
                     </select>
@@ -90,7 +90,6 @@
                 </div>
                 <div id="choix-poste-modif">
                 </div>
-                <input type="text" required name="verif-poste-modif" id="verif-poste-modif">
                 <p onclick="tryPosteModif()" class="is-button cent">Enregistrer</p>
             </form>
         </div>

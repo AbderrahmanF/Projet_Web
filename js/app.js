@@ -155,10 +155,10 @@ function filterByPoste() {
 }
 
 function addPosteModif(offre = null, cat = null) {
-    let verifPosteModif = document.querySelector('#verif-poste-modif')
-    if (verifPosteModif.value == "") {
-        verifPosteModif.value = "&"
-    }
+    // let verifPosteModif = document.querySelector('#verif-poste-modif')
+    // if (verifPosteModif.value == "") {
+    //     verifPosteModif.value = "&"
+    // }
     let poste = offre != null ? offre : document.querySelector('#select-poste-modif').value
     let secteur = cat != null ? cat : document.querySelector('#select-cat-modif').value
     let filtres = document.querySelector('#choix-poste-modif')
@@ -204,17 +204,17 @@ function SupPosteModif(evt) {
             break
         }
     }
-    if (filtres.children.length == 0) {
-        let verifPoste = document.querySelector('#verif-poste-modif')
-        verifPoste.value = ""
-    }
+    // if (filtres.children.length == 0) {
+    //     let verifPoste = document.querySelector('#verif-poste-modif')
+    //     verifPoste.value = ""
+    // }
 }
 
 function addPosteAjout() {
-    let verifPoste = document.querySelector('#verif-poste')
-    if (verifPoste.value == "") {
-        verifPoste.value = "&"
-    }
+    // let verifPoste = document.querySelector('#verif-poste')
+    // if (verifPoste.value == "") {
+    //     verifPoste.value = "&"
+    // }
     let poste = document.querySelector('#select-poste-ajout').value
     let secteur = document.querySelector('#select-cat-ajout').value
     let filtres = document.querySelector('#choix-poste')
@@ -260,10 +260,10 @@ function SupPosteAjout(evt) {
             break
         }
     }
-    if (filtres.children.length == 0) {
-        let verifPoste = document.querySelector('#verif-poste')
-        verifPoste.value = ""
-    }
+    // if (filtres.children.length == 0) {
+    //     let verifPoste = document.querySelector('#verif-poste')
+    //     verifPoste.value = ""
+    // }
 }
 
 function addPoste() {
@@ -271,7 +271,7 @@ function addPoste() {
     let secteur = document.querySelector('#select-cat').value
     let filtres = document.querySelector('#filtre-poste')
     for (let i = 0; i < filtres.children.length; i++) {
-        if (filtres.children[i].id === poste) {
+        if (filtres.children[i].id === poste + "-" + secteur) {
             return
         }
     }
@@ -328,7 +328,7 @@ function showAdder() {
             .then(php => {
                 doc.insertAdjacentHTML('beforeend', php);
             }).then(() => {
-                selectPosteAjout()
+                selectPoste('#select-cat-ajout', '#select-poste-ajout')
             })
             .catch(error => {
                 console.error('Une erreur s\'est produite : ', error);
@@ -360,13 +360,39 @@ function showModifier(evt) {
             .then(html => {
                 doc.insertAdjacentHTML('beforeend', html);
             }).then(() => {
-                selectPosteModif()
+                selectPoste('#select-cat-modif', '#select-poste-modif')
 
             })
             .catch(error => {
                 console.error('Une erreur s\'est produite : ', error);
             });
     }
+}
+
+function showOffers() {
+    let doc = document.querySelector('#main')
+    let div = document.querySelector('#offer-window')
+    if (div) {
+        div.style.display = 'flex'
+    }
+    else {
+        fetch('../html/gererOffres.php')
+            .then(response => response.text())
+            .then(php => {
+                doc.insertAdjacentHTML('beforeend', php);
+            }).then(() => {
+                let selectCatOffer = document.querySelector('#select-cat-offerModif');
+                let selectPosteOffer = document.querySelector('#select-poste-offerModif');
+                if (selectCatOffer && selectPosteOffer) {
+                    selectPoste("#select-cat-offerModif", "#select-poste-offerModif");
+                }
+                document.querySelector('#offer-window').style.display = 'flex';
+            })
+            .catch(error => {
+                console.error('Une erreur s\'est produite : ', error);
+            });
+    }
+
 }
 
 function hideAdder() {
@@ -387,51 +413,18 @@ function hideModifier() {
     }
 }
 
-function selectPoste() {
-    let select = document.querySelector('#select-cat')
-    let value = select.value
-    let select_poste = document.querySelector('#select-poste')
-    let options = select_poste.children
-    let changed = false
-    for (let i = 0; i < options.length; i++) {
-        if (!(options[i].classList[1] == value)) {
-            options[i].style.display = 'none'
-        }
-        else {
-            if (!changed) {
-                select_poste.value = options[i].value
-                changed = true
-            }
-            options[i].style.display = 'block'
-        }
-    }
-
+function hideOfferWindow() {
+    let div = document.querySelector('#offer-window')
+    div.style.display = 'none'
 }
 
-function selectPosteModif() {
-    let select = document.querySelector('#select-cat-modif')
-    let value = select.value
-    let select_poste = document.querySelector('#select-poste-modif')
-    let options = select_poste.children
-    let changed = false
-    for (let i = 0; i < options.length; i++) {
-        if (!(options[i].classList[1] == value)) {
-            options[i].style.display = 'none'
-        }
-        else {
-            if (!changed) {
-                select_poste.value = options[i].value
-                changed = true
-            }
-            options[i].style.display = 'block'
-        }
+function selectPoste(cat, poste) {
+    if (cat === "#select-cat-offerModif") {
+        document.querySelector('#nom-offre-modif').value = ""
     }
-}
-
-function selectPosteAjout() {
-    let select = document.querySelector('#select-cat-ajout')
+    let select = document.querySelector(cat)
     let value = select.value
-    let select_poste = document.querySelector('#select-poste-ajout')
+    let select_poste = document.querySelector(poste)
     let options = select_poste.children
     let changed = false
     for (let i = 0; i < options.length; i++) {
@@ -485,6 +478,9 @@ function isAdmin() {
             if (options[i].getAttribute('name') == 'delButton') {
                 options[i].setAttribute('onclick', "deleteSelected()")
             }
+            if (options[i].getAttribute('name') == 'offerButton') {
+                options[i].setAttribute('onclick', "showOffers()")
+            }
         }
     }
 }
@@ -500,18 +496,22 @@ function isNotAdmin() {
             if (options[i].getAttribute('name') == 'delButton' && options[i].getAttribute('onclick')) {
                 options[i].removeAttribute('onclick', "deleteSelected()")
             }
+            if (options[i].getAttribute('name') == 'offerButton' && options[i].getAttribute('onclick')) {
+                options[i].removeAttribute('onclick', "showOffers()")
+            }
         }
     }
 }
 
 function tryPoste() {
-    let postes = document.querySelector('#verif-poste')
+    // let postes = document.querySelector('#verif-poste')
+    postes = document.querySelector('#choix-poste').children
     let nom = document.querySelector('#nom-form')
     let prenom = document.querySelector('#prenom-form')
     let telephone = document.querySelector('#telephone-form')
     let courriel = document.querySelector('#courriel-form')
     let cv = document.querySelector('#pdf-file')
-    if (postes.value == "" || nom.value == "" || prenom.value == "" || telephone.value == "" || courriel.value == "" || cv.files.length == 0) {
+    if (postes.length == 0 || nom.value == "" || prenom.value == "" || telephone.value == "" || courriel.value == "" || cv.files.length == 0) {
         alert('Veuillez remplir tous les champs obligatoires')
     }
     else {
@@ -520,12 +520,12 @@ function tryPoste() {
 }
 
 function tryPosteModif() {
-    let postes = document.querySelector('#verif-poste-modif')
+    // let postes = document.querySelector('#choix-poste-modif').children
     let nom = document.querySelector('#nom-modif')
     let prenom = document.querySelector('#prenom-modif')
     let telephone = document.querySelector('#telephone-modif')
     let courriel = document.querySelector('#courriel-modif')
-    if (postes.value == "" || nom.value == "" || prenom.value == "" || telephone.value == "" || courriel.value == "") {
+    if (nom.value == "" || prenom.value == "" || telephone.value == "" || courriel.value == "") {
         alert('Veuillez remplir tous les champs obligatoires')
     }
     else {
@@ -535,6 +535,7 @@ function tryPosteModif() {
 
 function addCats(dest, options) {
     let selectCat = document.querySelector(dest)
+    console.log(dest)
     options.forEach(option => {
         let newOption = document.createElement('option')
         newOption.setAttribute('value', option.nom_secteur)
@@ -555,13 +556,29 @@ function addOffres(dest, options) {
         selectPosteList.appendChild(newOption)
     })
     if (dest.includes("ajout")) {
-        selectPosteAjout()
+        selectPoste('#select-cat-ajout', '#select-poste-ajout')
     }
     else if (dest.includes("modif")) {
-        selectPosteModif()
+        selectPoste('#select-cat-modif', '#select-poste-modif')
+    }
+    else if (dest.includes("offerModif")) {
+        selectPoste("#select-cat-offerModif", "#select-poste-offerModif")
     }
     else {
-        selectPoste()
+        selectPoste('#select-cat', '#select-poste')
+    }
+}
+
+function checkOffres(secteurId, offre) {
+    let secteurSelect = document.querySelector(secteurId)
+    let offres = JSON.parse(secteurSelect.getAttribute('offres'))
+    let newValue = document.querySelector(offre).value
+    let secteur = secteurSelect.value
+    if (offres.find(offre => offre.nom_offre.toLowerCase() == newValue.toLowerCase() && offre.nom_secteur == secteur)) {
+        document.querySelector('.warning').style.color = 'red'
+    }
+    else if (document.querySelector('.warning').style.color != 'transparent') {
+        document.querySelector('.warning').style.color = 'transparent'
     }
 }
 
@@ -660,4 +677,66 @@ function addPostulant() {
     // window.location.href = "../php/ajout_util.php?nom=" + nom + "&prenom=" + prenom + "&telephone=" + telephone + "&courriel=" + courriel + "&cv=" + cv + "&metier=" + JSON.stringify(metier)
     hideAdder()
     return false
+}
+
+function changeOfferForm(event) {
+    console.log(event.target)
+    let choix = event.target.value
+    let adder = document.querySelector('#add-offer')
+    let modifier = document.querySelector('#modif-offer')
+    let deleter = document.querySelector('#del-offer')
+    let formulaire = document.querySelector('#form-offer')
+    let offres = JSON.parse(document.querySelector('#offer-gestion').getAttribute('offres'))
+    let secteurs = JSON.parse(document.querySelector('#offer-gestion').getAttribute('secteurs'))
+    if (choix === "ajouter") {
+        if (adder.classList.contains('is-hidden')) {
+            adder.classList.remove('is-hidden')
+        }
+        if (!modifier.classList.contains('is-hidden')) {
+            modifier.classList.add('is-hidden')
+        }
+        if (!deleter.classList.contains('is-hidden')) {
+            deleter.classList.add('is-hidden')
+        }
+        document.querySelector('#nom-offre-add').required = true
+        document.querySelector('#nom-offre-modif').required = false
+        formulaire.setAttribute('action', '../php/addOffer.php')
+    }
+    else if (choix === "modifier") {
+        if (!adder.classList.contains('is-hidden')) {
+            adder.classList.add('is-hidden')
+        }
+        if (modifier.classList.contains('is-hidden')) {
+            modifier.classList.remove('is-hidden')
+            addCats('#select-cat-offerModif', secteurs);
+            addOffres('#select-poste-offerModif', offres);
+
+        }
+        if (!deleter.classList.contains('is-hidden')) {
+            deleter.classList.add('is-hidden')
+        }
+        document.querySelector('#nom-offre-add').required = false
+        document.querySelector('#nom-offre-modif').required = true
+        formulaire.setAttribute('action', '../php/modifyOffer.php')
+
+    }
+    else {
+
+        if (!adder.classList.contains('is-hidden')) {
+            adder.classList.add('is-hidden')
+        }
+        if (!modifier.classList.contains('is-hidden')) {
+            modifier.classList.add('is-hidden')
+        }
+        if (deleter.classList.contains('is-hidden')) {
+            deleter.classList.remove('is-hidden')
+            addCats('#select-cat-offerDel', secteurs);
+            addOffres('#select-poste-offerDel', offres);
+        }
+        document.querySelector('#nom-offre-add').required = false
+        document.querySelector('#nom-offre-modif').required = false
+        selectPoste('#select-cat-offerDel', '#select-poste-offerDel')
+        formulaire.setAttribute('action', '../php/deleteOffer.php')
+
+    }
 }

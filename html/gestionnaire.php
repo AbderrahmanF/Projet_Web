@@ -26,7 +26,6 @@
             sun.classList.add('is-hidden')
             moon.classList.remove('is-hidden')
             localStorage.setItem('gestionnaire_theme', '')
-
         } else if (sun && moon) {
             sun.classList.remove('is-hidden')
             moon.classList.add('is-hidden')
@@ -67,28 +66,27 @@
                         }
                         echo $js_code;
                     }
-                    // $select_query = "SELECT     postulant.nom AS nom,    postulant.prenom AS prenom,    postulant.email AS email, postulant.telephone AS telephone,   cv.pdf AS CvPath,     GROUP_CONCAT(DISTINCT offre.nom_offre ORDER BY offre.nom_offre SEPARATOR ', ') AS Offres,     GROUP_CONCAT(DISTINCT secteurs.nom_secteur ORDER BY secteurs.nom_secteur SEPARATOR ', ') AS Secteurs FROM     postulant INNER JOIN     postuler ON postulant.id_postulant = postuler.id_postulant INNER JOIN     offre ON postuler.id_offre = offre.id_offre INNER JOIN     secteurs ON offre.id_secteur = secteurs.id_secteur INNER JOIN     cv ON postulant.id_cv = cv.id_cv GROUP BY     postulant.id_postulant;";
                     $select_query = "SELECT 
-    postulant.nom AS nom,
+postulant.nom AS nom,
     postulant.prenom AS prenom,
     postulant.email AS email,
     postulant.telephone AS telephone,
     postulant.id_postulant AS id_postulant,
     cv.pdf AS CvPath,
-    CONCAT('[', GROUP_CONCAT(
+    CONCAT('[', IFNULL(GROUP_CONCAT(
         JSON_OBJECT(
             'offre', offres.nom_poste,
             'secteur', secteurs.nom_secteur
-        ) ORDER BY offres.nom_poste SEPARATOR ', '), ']') AS offres_secteurs
+        ) ORDER BY offres.nom_poste SEPARATOR ', '), ''), ']') AS offres_secteurs
 FROM 
     postulant
-INNER JOIN 
+LEFT JOIN 
     postuler ON postulant.id_postulant = postuler.id_postulant
-INNER JOIN 
+LEFT JOIN 
     offres ON postuler.id_offre = offres.id_offre
-INNER JOIN 
+LEFT JOIN 
     secteurs ON offres.id_secteur = secteurs.id_secteur
-INNER JOIN 
+LEFT JOIN 
     cv ON postulant.id_cv = cv.id_cv
 GROUP BY 
     postulant.id_postulant;";
@@ -128,6 +126,7 @@ GROUP BY
     <?php
     include 'ajouterUtilisateur.php';
     include 'modifierUtilisateur.php';
+    include 'gererOffres.php';
     ?>
 </body>
 
