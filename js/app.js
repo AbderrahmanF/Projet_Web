@@ -132,15 +132,12 @@ function filterByPoste() {
     const postesList = postes.map(poste => {
         return { "offre": poste.getAttribute('poste'), "secteur": poste.getAttribute('secteur') }
     })
-    console.log(postesList)
     const personnes = document.querySelectorAll('.is-person')
     for (let i = 0; i < personnes.length; i++) {
         let postulations = JSON.parse(personnes[i].getAttribute('metier'))
-        console.log(postulations)
         let shouldAppear = false
         for (let j = 0; j < postesList.length; j++) {
             if (postulations.find(item => item.offre == postesList[j].offre && item.secteur == postesList[j].secteur)) {
-                console.log('should appear')
                 shouldAppear = true
                 break
             }
@@ -195,7 +192,6 @@ function addPosteModif(offre = null, cat = null) {
 }
 
 function SupPosteModif(evt) {
-    console.log(evt)
     let element_id = evt.target.id
     let filtres = document.querySelector('#choix-poste-modif')
     for (let i = 0; i < filtres.children.length; i++) {
@@ -251,7 +247,6 @@ function addPosteAjout() {
 }
 
 function SupPosteAjout(evt) {
-    console.log(evt)
     let element_id = evt.target.id
     let filtres = document.querySelector('#choix-poste')
     for (let i = 0; i < filtres.children.length; i++) {
@@ -535,7 +530,6 @@ function tryPosteModif() {
 
 function addCats(dest, options) {
     let selectCat = document.querySelector(dest)
-    console.log(dest)
     options.forEach(option => {
         let newOption = document.createElement('option')
         newOption.setAttribute('value', option.nom_secteur)
@@ -680,7 +674,6 @@ function addPostulant() {
 }
 
 function changeOfferForm(event) {
-    console.log(event.target)
     let choix = event.target.value
     let adder = document.querySelector('#add-offer')
     let modifier = document.querySelector('#modif-offer')
