@@ -36,7 +36,7 @@
 <body>
     <div class="left-navbar">
         <div class="first-row">
-            <h1 class="is-title-1">Gestionnaire de CV</h1>
+            <h1 class="is-title-1 pointer" onclick="goLogin()">Gestionnaire de CV</h1>
             <span class="apply-theme pointer" onclick="changeTheme()">
                 <i class="bi-moon icon"></i>
                 <i class="bi-sun icon is-hidden"></i>

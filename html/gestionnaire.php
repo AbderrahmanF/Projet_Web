@@ -9,7 +9,25 @@
     <script src="../js/list.js"></script>
     <title>Gestionnaire</title>
 </head>
-
+<?php
+header("Cache-Control: no-cache, must-revalidate");
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+session_start();
+function console_log($output, $with_script_tags = true)
+{
+    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+        ');';
+    if ($with_script_tags) {
+        $js_code = '<script>' . $js_code . '</script>';
+    }
+    echo $js_code;
+}
+if (!isset($_SESSION['post_data'])) {
+    header("Location: login.php");
+    exit();
+}
+console_log($_SESSION['post_data']);
+?>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let theme = '';
@@ -32,6 +50,7 @@
             localStorage.setItem('gestionnaire_theme', 'is-dark')
         }
     })
+
 </script>
 
 <body id="main">
@@ -43,9 +62,6 @@
         <iframe src="leftNavbar.php"
             onload="this.before((this.contentDocument.body||this.contentDocument).children[0]);this.remove()"></iframe>
         <div class="main">
-            <!-- <div class="flex row">
-                <h2 class="is-title">Liste des CV</h2>
-            </div> -->
             <div class="select-flow">
                 <div class="title">
                     <h2 class="is-title">Liste des CV</h2>
@@ -57,15 +73,6 @@
                 <?php
                 try {
                     require ("../php/connexion.inc.php");
-                    function console_log($output, $with_script_tags = true)
-                    {
-                        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
-                            ');';
-                        if ($with_script_tags) {
-                            $js_code = '<script>' . $js_code . '</script>';
-                        }
-                        echo $js_code;
-                    }
                     $select_query = "SELECT 
 postulant.nom AS nom,
     postulant.prenom AS prenom,

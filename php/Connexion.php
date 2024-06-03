@@ -11,7 +11,6 @@ print_r($_POST);
 try {
     // Connexion à la base de données en utilisant PDO
     require ("./connexion.inc.php");
-
     // Vérifier si les valeurs du formulaire existent
     if (isset($_POST["User"]) && isset($_POST["Pass"])) {
         $username = $_POST["User"];
@@ -32,6 +31,9 @@ try {
             $rows = $result->fetchAll();
             $mdpBd = $rows[0]["mot_passe"];
             if ($password == $mdpBd) {
+                header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+                header("Cache-Control: post-check=0, pre-check=0", false);
+                header("Pragma: no-cache");
                 session_start();
                 $_SESSION['post_data'] = $_POST;
                 // Rediriger vers la page gestionnaire.php
@@ -39,8 +41,11 @@ try {
                 exit;
             } else {
                 echo "Mot de passe incorrect.";
+                header("Location: ../html/login.html");
+
             }
         } else {
+            header("Location: ../html/login.html");
             echo "Utilisateur non trouvé.";
         }
         // $stmt = $pdo->prepare($sql);

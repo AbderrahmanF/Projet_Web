@@ -1,3 +1,7 @@
+function goLogin() {
+    window.location.href = "../html/login.php";
+
+}
 
 function togglePassword() {
     const togglePassword = document.querySelector("#togglePassword");
@@ -6,7 +10,6 @@ function togglePassword() {
     password.type === 'password' ? password.type = 'text' : password.type = 'password'
     togglePassword.classList.toggle("bi-eye")
 }
-
 
 function getJobs(persons) {
     let jobsList = []
