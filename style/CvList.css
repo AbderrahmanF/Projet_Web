@@ -111,5 +111,12 @@
             background-color: #739fb6;
             transform: scale(1.2) !important;
         }
+
+        &.not-admin {
+            transform: scale(1) !important;
+            background-color: transparent;
+            cursor: not-allowed;
+            color: #a3a3a3;
+        }
     }
 }

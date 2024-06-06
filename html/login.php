@@ -35,6 +35,11 @@
 session_start();
 session_unset();
 session_destroy();
+if (isset($_GET['mdp']) && $_GET['mdp'] == 'incorrect') {
+    echo '<script>alert("Mot de passe incorrect")</script>';
+} elseif (isset($_GET['user']) && $_GET['user'] == 'incorrect') {
+    echo '<script>alert("Nom d\'utilisateur incorrect")</script>';
+}
 ?>
 
 <body>

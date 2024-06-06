@@ -23,10 +23,14 @@ function getList(L) {
         div_option.appendChild(checkbox)
         var modif_icon = document.createElement("i")
         modif_icon.setAttribute("class", "icon bi-pencil-square pointer")
-        modif_icon.addEventListener("click", function (event) {
+        // modif_icon.addEventListener("click", function (event) {
+        //     event.stopPropagation()
+        //     showModifier(event)
+        // })
+        modif_icon.onclick = function (event) {
             event.stopPropagation()
             showModifier(event)
-        })
+        }
         div_option.appendChild(modif_icon)
         var div1 = document.createElement("div")
         var div1_1 = document.createElement("div")

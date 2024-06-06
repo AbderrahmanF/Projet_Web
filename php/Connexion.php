@@ -10,6 +10,15 @@ $base_de_donnees = 'projet_ava_bdd';
 print_r($_POST);
 try {
     // Connexion à la base de données en utilisant PDO
+    function console_log($output, $with_script_tags = true)
+    {
+        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+            ');';
+        if ($with_script_tags) {
+            $js_code = '<script>' . $js_code . '</script>';
+        }
+        echo $js_code;
+    }
     require ("./connexion.inc.php");
     // Vérifier si les valeurs du formulaire existent
     if (isset($_POST["User"]) && isset($_POST["Pass"])) {
@@ -30,7 +39,7 @@ try {
         if ($result->rowCount() > 0) {
             $rows = $result->fetchAll();
             $mdpBd = $rows[0]["mot_passe"];
-            if ($password == $mdpBd) {
+            if (md5($password) == $mdpBd) {
                 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
                 header("Cache-Control: post-check=0, pre-check=0", false);
                 header("Pragma: no-cache");
@@ -40,13 +49,11 @@ try {
                 header("Location: ../html/gestionnaire.php");
                 exit;
             } else {
-                echo "Mot de passe incorrect.";
-                header("Location: ../html/login.html");
+                header("Location: ../html/login.php?mdp=incorrect");
 
             }
         } else {
-            header("Location: ../html/login.html");
-            echo "Utilisateur non trouvé.";
+            header("Location: ../html/login.php?user=incorrect");
         }
         // $stmt = $pdo->prepare($sql);
 

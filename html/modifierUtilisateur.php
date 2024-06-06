@@ -22,7 +22,7 @@
                 <input id="telephone-modif" class="is-input" type="text" placeholder="Téléphone" required>
                 <input id="courriel-modif" class="is-input" type="text" placeholder="Courriel" required>
                 <div class="flex column gap-5 is-left cent">
-                    <p class="is-label" for="#pdf-file">CV :</p>
+                    <p class="is-label" for="#pdf-file">CV (si nouveau):</p>
                     <input id="pdf-file-modif" class="pointer" type="file" accept="application/pdf">
                 </div>
                 <div class="is-centered">

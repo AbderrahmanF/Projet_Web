@@ -481,6 +481,10 @@ function isAdmin() {
             }
         }
     }
+    let pens = document.querySelectorAll('.bi-pencil-square')
+    for (let i = 0; i < pens.length; i++) {
+        pens[i].style.display = 'inline-block'
+    }
 }
 
 function isNotAdmin() {
@@ -498,6 +502,10 @@ function isNotAdmin() {
                 options[i].removeAttribute('onclick', "showOffers()")
             }
         }
+    }
+    let pens = document.querySelectorAll('.bi-pencil-square')
+    for (let i = 0; i < pens.length; i++) {
+        pens[i].style.display = 'none'
     }
 }
 

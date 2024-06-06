@@ -79,9 +79,6 @@
             }
             session_start();
             $post_data = $_SESSION['post_data'];
-            // Utilisez les données POST selon vos besoins
-            // print_r($post_data);
-            // Nettoyer les données POST de la session après utilisation si nécessaire
             $username = $post_data["User"];
             $select_query = "SELECT droits from utilisateurs WHERE username = :username;";
             $result = $pdo->prepare($select_query);
@@ -89,7 +86,6 @@
             $result->execute();
             $result->setFetchMode(PDO::FETCH_ASSOC);
             $rows = $result->fetchAll();
-            // print_r($rows[0]["droits"]);
             if ($rows[0]["droits"] == "Admin") {
                 echo '<script>isAdmin()</script>';
             } else {

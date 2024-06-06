@@ -40,7 +40,6 @@ console_log($_SESSION['post_data']);
         let sun = document.querySelector('.bi-sun')
         let moon = document.querySelector('.bi-moon')
         if (!head.classList.contains('is-dark') && sun && moon) {
-            console.log('hep')
             sun.classList.add('is-hidden')
             moon.classList.remove('is-hidden')
             localStorage.setItem('gestionnaire_theme', '')
@@ -134,7 +133,27 @@ GROUP BY
     include 'ajouterUtilisateur.php';
     include 'modifierUtilisateur.php';
     include 'gererOffres.php';
+    try {
+        require ("../php/connexion.inc.php");
+
+        $post_data = $_SESSION['post_data'];
+        $username = $post_data["User"];
+        $select_query = "SELECT droits from utilisateurs WHERE username = :username;";
+        $result = $pdo->prepare($select_query);
+        $result->bindParam(':username', $username, PDO::PARAM_STR);
+        $result->execute();
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $rows = $result->fetchAll();
+        if ($rows[0]["droits"] == "Admin") {
+            echo '<script>isAdmin()</script>';
+        } else {
+            echo '<script>isNotAdmin()</script>';
+        }
+    } catch (PDOException $e) {
+        die("Erreur: " . $e->getMessage());
+    }
     ?>
+
 </body>
 
 </html>
